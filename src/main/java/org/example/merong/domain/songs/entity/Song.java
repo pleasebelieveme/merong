@@ -1,0 +1,60 @@
+package org.example.merong.domain.songs.entity;
+
+import java.util.List;
+
+import org.example.merong.common.BaseEntity;
+import org.example.merong.domain.comments.entity.Comment;
+import org.example.merong.domain.users.entity.User;
+
+import jakarta.persistence.CascadeType;
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.FetchType;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
+import jakarta.persistence.OneToMany;
+import jakarta.persistence.Table;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+
+@Getter
+@Entity
+@NoArgsConstructor
+@AllArgsConstructor
+@Table(name = "songs")
+public class Song extends BaseEntity {
+
+	@Id
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	private Long id;
+
+	@Column(nullable = false)
+	private String name;
+
+	@Column(nullable = false)
+	private String duration;
+
+	@Column(nullable = false)
+	private String singer;
+
+	@Column(nullable = false)
+	private String genre;
+
+	@Column(nullable = false)
+	private Long likeCount;
+
+	private Long playCount;
+
+	@ManyToOne(fetch = FetchType.LAZY)
+	@JoinColumn(name = "user_id", nullable = false)
+	private User user;
+
+	@OneToMany(mappedBy = "song", cascade = CascadeType.ALL, orphanRemoval = true)
+	private List<Comment> comments;
+
+
+}
