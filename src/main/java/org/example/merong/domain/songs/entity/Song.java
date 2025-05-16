@@ -28,15 +28,22 @@ import lombok.NoArgsConstructor;
 @Table(name = "songs")
 public class Song extends BaseEntity {
 
+	/**
+	 * PK
+	 * 노래제목
+	 * 아티스트
+	 * 장르
+	 * 좋아요 수
+	 * 재생 수
+	 * 유저 FK
+	 */
+
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
 
 	@Column(nullable = false)
 	private String name;
-
-	@Column(nullable = false)
-	private String duration;
 
 	@Column(nullable = false)
 	private String singer;
@@ -47,6 +54,7 @@ public class Song extends BaseEntity {
 	@Column(nullable = false)
 	private Long likeCount;
 
+	@Column(nullable = false)
 	private Long playCount;
 
 	@ManyToOne(fetch = FetchType.LAZY)
