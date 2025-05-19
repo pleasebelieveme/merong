@@ -40,7 +40,7 @@ public class SongController {
         return ResponseEntity.status(songService.updateSong(userDetail.getUser().getId(), songId, dto), HttpStatus.OK);
     }
     // 4. 노래 삭제
-    @PatchMapping("/{songid}")
+    @DeleteMapping("/{songid}")
     public ResponseEntity<Void> deleteSong(@AuthenticationPrincipal CustomUserDetails userDetail,
                                            @PathVariable Long songid) {
 
