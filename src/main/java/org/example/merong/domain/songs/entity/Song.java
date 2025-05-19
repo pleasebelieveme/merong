@@ -4,6 +4,9 @@ import java.util.List;
 
 import org.example.merong.common.BaseEntity;
 import org.example.merong.domain.comments.entity.Comment;
+import org.example.merong.domain.songs.dto.request.SongRequestDto;
+import org.example.merong.domain.songs.dto.request.SongUpdateDto;
+import org.example.merong.domain.songs.enums.Genres;
 import org.example.merong.domain.users.entity.User;
 
 import jakarta.persistence.CascadeType;
@@ -49,7 +52,10 @@ public class Song extends BaseEntity {
 	private String singer;
 
 	@Column(nullable = false)
-	private String genre;
+	private Genres genre;
+
+	@Column(nullable = false)
+	private String description;
 
 	@Column(nullable = false)
 	private Long likeCount;
@@ -64,5 +70,19 @@ public class Song extends BaseEntity {
 	@OneToMany(mappedBy = "song", cascade = CascadeType.ALL, orphanRemoval = true)
 	private List<Comment> comments;
 
+	public Song(SongRequestDto dto) {
+		this.user = dto.getUser();
+		this.name = dto.getName();
+		this.singer = dto.getSinger();
+		this.genre = dto.getGenre();
+		this.description = dto.getDescription();
+	}
 
+	// PATCH 요청 시
+	public void updateSong(SongUpdateDto dto) {
+		this.name = dto.getName();
+		this.singer = dto.getSinger();
+		this.genre = dto.getGenre();
+		this.description = dto.getDescription();
+	}
 }
