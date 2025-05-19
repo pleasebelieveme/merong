@@ -25,37 +25,37 @@ public class CommentController {
 
     private final CommentService commentService;
 
-//    @PostMapping("/api/songs/{songId}/comments")
-//    public ResponseEntity<CommentResponseDto.Add> createComment(
-//            @PathVariable Long songId,
-//            @Valid @RequestBody CommentRequestDto.Add requestDto,
-//            @AuthenticationPrincipal CustomUserDetails userDetails
-//    ){
-//
-//        CommentResponseDto.Add saveComment = commentService.saveComment(songId, requestDto, userDetails.getUserId());
-//
-//        return ResponseEntity.status(HttpStatus.CREATED).body(saveComment);
-//    }
-//
-//    @PatchMapping("/api/comments/{commentId}")
-//    public ResponseEntity<CommentResponseDto.Update> updateComment(
-//            @PathVariable Long commentId,
-//            @Valid @RequestBody CommentRequestDto.Update requestDto,
-//            @AuthenticationPrincipal CustomUserDetails userDetails
-//    ){
-//        CommentResponseDto.Update updateComment = commentService.updateComment(commentId, requestDto, userDetails.getUserId());
-//
-//        return ResponseEntity.status(HttpStatus.OK).body(updateComment);
-//    }
-//
-//    @DeleteMapping("/api/comments/{commentId}")
-//    public ResponseEntity<String> deleteComment(
-//            @PathVariable Long commentId,
-//            @AuthenticationPrincipal CustomUserDetails userDetails
-//    ){
-//        commentService.deleteComment(commentId, userDetails.getUserId());
-//
-//        return ResponseEntity.status(HttpStatus.NO_CONTENT).body("댓글이 삭제되었습니다.");
-//    }
+    @PostMapping("/api/songs/{songId}/comments")
+    public ResponseEntity<CommentResponseDto.Add> createComment(
+            @PathVariable Long songId,
+            @Valid @RequestBody CommentRequestDto.Add requestDto,
+            @AuthenticationPrincipal CustomUserDetails userDetails
+    ){
+
+        CommentResponseDto.Add saveComment = commentService.saveComment(songId, requestDto, userDetails.getUser().getId());
+
+        return ResponseEntity.status(HttpStatus.CREATED).body(saveComment);
+    }
+
+    @PatchMapping("/api/comments/{commentId}")
+    public ResponseEntity<CommentResponseDto.Update> updateComment(
+            @PathVariable Long commentId,
+            @Valid @RequestBody CommentRequestDto.Update requestDto,
+            @AuthenticationPrincipal CustomUserDetails userDetails
+    ){
+        CommentResponseDto.Update updateComment = commentService.updateComment(commentId, requestDto, userDetails.getUser().getId());
+
+        return ResponseEntity.status(HttpStatus.OK).body(updateComment);
+    }
+
+    @DeleteMapping("/api/comments/{commentId}")
+    public ResponseEntity<String> deleteComment(
+            @PathVariable Long commentId,
+            @AuthenticationPrincipal CustomUserDetails userDetails
+    ){
+        commentService.deleteComment(commentId, userDetails.getUser().getId());
+
+        return ResponseEntity.status(HttpStatus.NO_CONTENT).body("댓글이 삭제되었습니다.");
+    }
 
 }
