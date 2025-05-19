@@ -2,6 +2,8 @@ package org.example.merong.domain.songs.dto.response;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
+import org.example.merong.domain.songs.dto.request.SongRequestDto;
+import org.example.merong.domain.songs.entity.Song;
 import org.example.merong.domain.songs.enums.Genres;
 
 import java.time.LocalDateTime;
@@ -43,7 +45,17 @@ public class SongResponseDto {
 
     private final String description;
 
-
-
+    public SongResponseDto(Song song) {
+        this.id = song.getId();
+        this.userId = song.getUser().getId();
+        this.name = song.getName();
+        this.singer = song.getSinger();
+        this.genre = song.getGenre();
+        this.createdAt = song.getCreatedAt();
+        this.updatedAt = song.getUpdatedAt();
+        this.likeCount = song.getLikeCount();
+        this.playCount = song.getPlayCount();
+        this.description = song.getDescription();
+    }
 
 }

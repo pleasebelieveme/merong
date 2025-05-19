@@ -19,4 +19,16 @@ public class CommentRequestDto {
 
     }
 
+    @Getter
+    @NoArgsConstructor
+    @AllArgsConstructor
+    public static class Update{
+
+        @NotBlank(message = "내용을 입력해주세요.")
+        private String content;
+
+    }
+
+
+
 }
