@@ -21,7 +21,7 @@ public class LikeService {
 	private final UserRepository userRepository;
 	private final SongRepository songRepository;
 
-	public LikeResponseDto doLike(LikeRequestDto dto) {
+	public LikeResponseDto.Add doLike(LikeRequestDto.Add dto) {
 
 		// 중복 좋아요 체크
 		boolean exists = likeRepository.existsByUserIdAndSongId(dto.getUserId(), dto.getSongId());
@@ -44,15 +44,14 @@ public class LikeService {
 
 		likeRepository.save(like);
 
-		return new LikeResponseDto(like.getId(), findUser.getId(), findSong.getId());
+		return new LikeResponseDto.Add(like.getId(), findUser.getId(), findSong.getId());
 	}
 
 	@Transactional
-	public void unLike(LikeRequestDto dto) {
+	public void unLike(LikeRequestDto.Add dto) {
 
 		// 좋아요가 존재하는지 확인
-		Like findLike = likeRepository.findByUserIdAndSongId(dto.getUserId(), dto.getSongId())
-			.orElseThrow(() -> new IllegalArgumentException("좋아요가 존재하지 않습니다."));
+		Like findLike = likeRepository.findByUserIdAndSongIdOrElseThrow(dto.getUserId(), dto.getSongId());
 
 		likeRepository.delete(findLike);
 	}

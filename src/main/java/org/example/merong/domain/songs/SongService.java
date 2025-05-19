@@ -5,7 +5,8 @@ import org.example.merong.domain.songs.dto.request.SongRequestDto;
 import org.example.merong.domain.songs.dto.request.SongUpdateDto;
 import org.example.merong.domain.songs.dto.response.SongResponseDto;
 import org.example.merong.domain.songs.entity.Song;
-import org.example.merong.domain.users.entity.User;
+import org.example.merong.domain.user.entity.User;
+import org.example.merong.domain.user.repository.UserRepository;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 

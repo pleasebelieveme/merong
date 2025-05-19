@@ -3,7 +3,7 @@ package org.example.merong.domain.comments.entity;
 import java.util.List;
 
 import lombok.Builder;
-import org.example.merong.common.BaseEntity;
+import org.example.merong.common.base.BaseEntity;
 import org.example.merong.domain.reply.entity.Reply;
 import org.example.merong.domain.songs.entity.Song;
 import org.example.merong.domain.user.entity.User;

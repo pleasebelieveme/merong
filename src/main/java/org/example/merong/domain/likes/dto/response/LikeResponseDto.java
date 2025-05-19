@@ -2,12 +2,17 @@ package org.example.merong.domain.likes.dto.response;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 
-@Getter
-@AllArgsConstructor
 public class LikeResponseDto {
 
-	private final Long id;
-	private final Long userId;
-	private final Long songId;
+	@Getter
+	@AllArgsConstructor
+	@NoArgsConstructor
+	public static class Add {
+
+		private Long id;
+		private Long userId;
+		private Long songId;
+	}
 }
