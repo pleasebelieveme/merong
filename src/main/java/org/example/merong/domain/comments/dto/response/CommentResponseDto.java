@@ -21,4 +21,19 @@ public class CommentResponseDto {
         private Long songId;
     }
 
+
+    @Getter
+    @AllArgsConstructor
+    @NoArgsConstructor
+    public static class Update{
+
+        private Long userId;
+
+        private String content;
+
+        private LocalDateTime updatedAt;
+
+        private Long songId;
+    }
+
 }
