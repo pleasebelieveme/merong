@@ -38,21 +38,22 @@ public class CommentService {
 //                .build();
 
         // comment 객체 생성 및 초기화
-        Comment comment = Comment.builder()
-                .content(requestDto.getContent())
-                .song(songRepository.findByIdOrElseThrow(songId))
-                .user(userRepository.findByIdOrElseThrow(userId))
-                .build();
+//        Comment comment = Comment.builder()
+//                .content(requestDto.getContent())
+//                .song(songRepository.findByIdOrElseThrow(songId))
+//                .user(userRepository.findByIdOrElseThrow(userId))
+//                .build();
 
         // 댓글 생성
-        commentRepository.save(comment);
-
-        return new CommentResponseDto.Add(
-                comment.getUser().getId(),
-                comment.getContent(),
-                comment.getCreatedAt(),
-                comment.getSong().getId()
-        );
+//        commentRepository.save(comment);
+//
+//        return new CommentResponseDto.Add(
+//                comment.getUser().getId(),
+//                comment.getContent(),
+//                comment.getCreatedAt(),
+//                comment.getSong().getId()
+//        );
+        return null;
     }
 
 
@@ -92,12 +93,12 @@ public class CommentService {
         Comment findComment = commentRepository.findByIdOrElseThrow(commentId);
 
         //유저 찾아오기
-        Comment findUser = userRepository.findByIdOrElseThrow(userId);
+//        Comment findUser = userRepository.findByIdOrElseThrow(userId);
 
         // 검증
-        if(!findComment.getUser().getId().equals(findUser.getId())){
-            throw new RuntimeException("정보가 일치하지 않습니다.");
-        }
+//        if(!findComment.getUser().getId().equals(findUser.getId())){
+//            throw new RuntimeException("정보가 일치하지 않습니다.");
+//        }
 
         return findComment;
     }
