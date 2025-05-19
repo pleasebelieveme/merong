@@ -16,10 +16,8 @@ public class AccessJwtFilter extends BaseJwtFilter {
         String uri = request.getRequestURI();
         String method = request.getMethod();
 
-        return (FilterConstants.WHITE_LIST.stream()
-                .anyMatch(uri::equals))
-                || (uri.equals(FilterConstants.USER_CRUD) && method.equals("POST"))
-                || (uri.equals(FilterConstants.REISSUE) && method.equals("POST"));
+        return FilterConstants.WHITE_LIST.stream()
+                .anyMatch(route -> route.path().equals(uri) && route.method().equalsIgnoreCase(method));
     }
 
     @Override
