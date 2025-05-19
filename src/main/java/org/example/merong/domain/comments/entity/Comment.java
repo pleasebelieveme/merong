@@ -5,7 +5,7 @@ import java.util.List;
 import org.example.merong.common.BaseEntity;
 import org.example.merong.domain.reply.entity.Reply;
 import org.example.merong.domain.songs.entity.Song;
-import org.example.merong.domain.users.entity.User;
+import org.example.merong.domain.user.entity.User;
 
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;

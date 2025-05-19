@@ -2,7 +2,7 @@ package org.example.merong.domain.reply.entity;
 
 import org.example.merong.common.BaseEntity;
 import org.example.merong.domain.comments.entity.Comment;
-import org.example.merong.domain.users.entity.User;
+import org.example.merong.domain.user.entity.User;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;

@@ -1,18 +1,12 @@
-package org.example.merong.domain.users.entity;
+package org.example.merong.domain.user.entity;
 
 import java.util.List;
+import java.util.UUID;
 
+import jakarta.persistence.*;
 import org.example.merong.common.BaseEntity;
 import org.example.merong.domain.songs.entity.Song;
 
-import jakarta.persistence.CascadeType;
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
-import jakarta.persistence.OneToMany;
-import jakarta.persistence.Table;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -20,9 +14,15 @@ import lombok.NoArgsConstructor;
 
 @Getter
 @Entity
+@Builder
 @NoArgsConstructor
 @AllArgsConstructor
-@Table(name = "users")
+@Table(
+		name = "users",
+		uniqueConstraints = {
+				@UniqueConstraint(columnNames = {"email"})
+		}
+)
 public class User extends BaseEntity {
 
 	@Id
@@ -35,16 +35,17 @@ public class User extends BaseEntity {
 	@Column(nullable = false)
 	private String password;
 
-	@Column(nullable = false, unique = true)
+	@Column(nullable = false)
 	private String email;
 
 	@OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
 	private List<Song> songs;
 
-	@Builder
-	public User(String email, String password, String name){
-		this.email = email;
-		this.password = password;
-		this.name = name;
+	@Column
+	private boolean isDeleted;
+
+	public void withdraw() {
+		this.name = "deleted user" + UUID.randomUUID();
+		this.isDeleted = true;
 	}
 }
