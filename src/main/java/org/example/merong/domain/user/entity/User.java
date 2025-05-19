@@ -4,7 +4,7 @@ import java.util.List;
 import java.util.UUID;
 
 import jakarta.persistence.*;
-import org.example.merong.common.BaseEntity;
+import org.example.merong.common.base.BaseEntity;
 import org.example.merong.domain.songs.entity.Song;
 
 import lombok.AllArgsConstructor;
@@ -47,5 +47,10 @@ public class User extends BaseEntity {
 	public void withdraw() {
 		this.name = "deleted user" + UUID.randomUUID();
 		this.isDeleted = true;
+	}
+
+	public void changeProfileInformation(String name, String newPassword) {
+		this.name = name;
+		this.password = newPassword;
 	}
 }

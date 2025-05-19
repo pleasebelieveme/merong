@@ -2,7 +2,7 @@ package org.example.merong.domain.songs.entity;
 
 import java.util.List;
 
-import org.example.merong.common.BaseEntity;
+import org.example.merong.common.base.BaseEntity;
 import org.example.merong.domain.comments.entity.Comment;
 import org.example.merong.domain.user.entity.User;
 import org.example.merong.domain.songs.dto.request.SongRequestDto;

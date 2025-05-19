@@ -8,6 +8,9 @@ import org.example.merong.domain.songs.entity.Song;
 import org.example.merong.domain.songs.exception.SongException;
 import org.example.merong.domain.songs.exception.SongsExceptionCode;
 import org.example.merong.domain.user.entity.User;
+import org.example.merong.domain.user.exception.UserException;
+import org.example.merong.domain.user.exception.UserExceptionCode;
+import org.example.merong.domain.user.repository.UserRepository;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -25,7 +28,7 @@ public class SongService {
     // 1. 노래 등록
     public SongResponseDto.Create createSong(Long userId, SongRequestDto dto) {
 
-        User currentUser = userRepository.findById(userId).orElseThrow(() -> new RuntimeException());
+        User currentUser = userRepository.findById(userId).orElseThrow(() -> new UserException(UserExceptionCode.USER_NOT_FOUND));
 
         Song song = songRepository.save(new Song(dto));
 
@@ -36,7 +39,7 @@ public class SongService {
     @Transactional(readOnly = true)
     public List<SongResponseDto.Get> getSongs(Long userId) {
 
-        User currentUser = userRepository.findById(userId).orElseThrow(() -> new RuntimeException());
+        User currentUser = userRepository.findById(userId).orElseThrow(() -> new UserException(UserExceptionCode.USER_NOT_FOUND));
 
         return currentUser.getSongs().stream().map(SongResponseDto.Get::new).collect(Collectors.toList());
 
@@ -45,7 +48,7 @@ public class SongService {
     // 3. 노래 수정
     public SongResponseDto.Update updateSong(Long userId, Long songId, SongUpdateDto dto) {
 
-        User currentUser = userRepository.findById(userId).orElseThrow(() -> new RuntimeException());
+        User currentUser = userRepository.findById(userId).orElseThrow(() -> new UserException(UserExceptionCode.USER_NOT_FOUND));
         Song song = songRepository.findByIdOrElseThrow(songId);
 
         // 검증
@@ -63,7 +66,7 @@ public class SongService {
     // 4. 노래 삭제
     public void deleteSong(Long userId, Long songId) {
 
-        User currentUser = userRepository.findById(userId).orElseThrow(() -> new RuntimeException());
+        User currentUser = userRepository.findById(userId).orElseThrow(() -> new UserException(UserExceptionCode.USER_NOT_FOUND));
         Song song = songRepository.findByIdOrElseThrow(songId);
 
         // 검증

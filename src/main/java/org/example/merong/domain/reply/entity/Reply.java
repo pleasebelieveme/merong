@@ -1,6 +1,6 @@
 package org.example.merong.domain.reply.entity;
 
-import org.example.merong.common.BaseEntity;
+import org.example.merong.common.base.BaseEntity;
 import org.example.merong.domain.comments.entity.Comment;
 import org.example.merong.domain.user.entity.User;
 
@@ -38,5 +38,7 @@ public class Reply extends BaseEntity {
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "comment_id", nullable = false)
 	private Comment comment;
+
+
 
 }
