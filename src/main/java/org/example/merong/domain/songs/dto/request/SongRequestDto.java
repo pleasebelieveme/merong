@@ -4,7 +4,7 @@ import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Size;
 import lombok.Getter;
 import org.example.merong.domain.songs.enums.Genres;
-import org.example.merong.domain.users.entity.User;
+import org.example.merong.domain.user.entity.User;
 
 @Getter
 public class SongRequestDto {
