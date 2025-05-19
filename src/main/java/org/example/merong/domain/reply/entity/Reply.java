@@ -39,4 +39,6 @@ public class Reply extends BaseEntity {
 	@JoinColumn(name = "comment_id", nullable = false)
 	private Comment comment;
 
+
+
 }

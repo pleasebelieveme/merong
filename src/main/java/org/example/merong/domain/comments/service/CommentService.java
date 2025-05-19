@@ -5,7 +5,10 @@ import org.example.merong.domain.comments.dto.request.CommentRequestDto;
 import org.example.merong.domain.comments.dto.response.CommentResponseDto;
 import org.example.merong.domain.comments.entity.Comment;
 import org.example.merong.domain.comments.repository.CommentRepository;
+import org.example.merong.domain.songs.SongRepository;
 import org.example.merong.domain.songs.SongService;
+import org.example.merong.domain.songs.entity.Song;
+import org.example.merong.domain.user.repository.UserRepository;
 import org.example.merong.domain.user.service.UserService;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -14,35 +17,51 @@ import org.springframework.transaction.annotation.Transactional;
 @Service
 public class CommentService {
 
-    private final SongService songService;
-
-    private final UserService userService;
+//    private final SongService songService;
+//
+//    private final UserService userService;
 
     private final CommentRepository commentRepository;
 
-//    public CommentResponseDto.Add saveComment(Long songId, CommentRequestDto.Add requestDto, Long userId) {
-//
+    private final UserRepository userRepository;
+
+    private final SongRepository songRepository;
+
+
+    // 댓글 생성
+    public CommentResponseDto.Add saveComment(Long songId, CommentRequestDto.Add requestDto, Long userId) {
+
 //        Comment comment = Comment.builder()
 //                .content(requestDto.getContent())
 //                .song(songService.findById(songId))
 //                .user(userService.findById(userId))
 //                .build();
-//
-//        commentRepository.save(comment);
-//
-//        return new CommentResponseDto.Add(
-//                comment.getUser().getId(),
-//                comment.getContent(),
-//                comment.getCreatedAt(),
-//                comment.getSong().getId()
-//        );
-//    }
 
+        // comment 객체 생성 및 초기화
+        Comment comment = Comment.builder()
+                .content(requestDto.getContent())
+                .song(songRepository.findByIdOrElseThrow(songId))
+                .user(userRepository.findByIdOrElseThrow(userId))
+                .build();
+
+        // 댓글 생성
+        commentRepository.save(comment);
+
+        return new CommentResponseDto.Add(
+                comment.getUser().getId(),
+                comment.getContent(),
+                comment.getCreatedAt(),
+                comment.getSong().getId()
+        );
+    }
+
+
+    // 댓글 수정
     @Transactional
     public CommentResponseDto.Update updateComment(Long commentId, CommentRequestDto.Update requestDto, Long userId){
 
-        // 로그인 유저가 찾는 댓글 찾아오기
-        Comment findComment = commentRepository.findByIdAndUserIdOrElseThrow(commentId, userId);
+        //댓글 찾아오기 및 검증
+        Comment findComment = validateCommentUser(commentId, userId);
 
         // 업데이트
         findComment.updateContent(requestDto.getContent());
@@ -56,10 +75,30 @@ public class CommentService {
     }
 
 
+    // 댓글 삭제
     @Transactional
     public void deleteComment(Long commentId, Long userId){
-        Comment findComment = commentRepository.findByIdAndUserIdOrElseThrow(commentId, userId);
 
+        //댓글 찾아오기 및 검증
+        Comment findComment = validateCommentUser(commentId, userId);
+
+        // 댓글 삭제
         commentRepository.delete(findComment);
+    }
+
+    // 댓글 작성 유저와 로그인 유저 동일 검증 및 댓글 찾아오는 메소드
+    private Comment validateCommentUser(Long commentId, Long userId){
+        //댓글 찾아오기
+        Comment findComment = commentRepository.findByIdOrElseThrow(commentId);
+
+        //유저 찾아오기
+        Comment findUser = userRepository.findByIdOrElseThrow(userId);
+
+        // 검증
+        if(!findComment.getUser().getId().equals(findUser.getId())){
+            throw new RuntimeException("정보가 일치하지 않습니다.");
+        }
+
+        return findComment;
     }
 }
