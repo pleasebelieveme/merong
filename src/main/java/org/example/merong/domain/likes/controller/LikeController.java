@@ -30,4 +30,10 @@ public class LikeController {
 		return new ResponseEntity<>(responseDto, HttpStatus.OK);
 	}
 
+	// 2. 좋아요 취소
+	@DeleteMapping
+	public ResponseEntity<Void> unLike(@RequestBody LikeRequestDto requestDto) {
+		likeService.unLike(requestDto);
+		return ResponseEntity.noContent().build();
+	}
 }

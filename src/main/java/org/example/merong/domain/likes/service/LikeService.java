@@ -9,6 +9,7 @@ import org.example.merong.domain.songs.entity.Song;
 import org.example.merong.domain.user.repository.UserRepository;
 import org.example.merong.domain.user.entity.User;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import lombok.RequiredArgsConstructor;
 
@@ -44,5 +45,15 @@ public class LikeService {
 		likeRepository.save(like);
 
 		return new LikeResponseDto(like.getId(), findUser.getId(), findSong.getId());
+	}
+
+	@Transactional
+	public void unLike(LikeRequestDto dto) {
+
+		// 좋아요가 존재하는지 확인
+		Like findLike = likeRepository.findByUserIdAndSongId(dto.getUserId(), dto.getSongId())
+			.orElseThrow(() -> new IllegalArgumentException("좋아요가 존재하지 않습니다."));
+
+		likeRepository.delete(findLike);
 	}
 }
