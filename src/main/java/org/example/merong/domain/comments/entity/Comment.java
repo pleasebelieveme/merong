@@ -2,6 +2,7 @@ package org.example.merong.domain.comments.entity;
 
 import java.util.List;
 
+import lombok.Builder;
 import org.example.merong.common.BaseEntity;
 import org.example.merong.domain.reply.entity.Reply;
 import org.example.merong.domain.songs.entity.Song;
@@ -34,7 +35,7 @@ public class Comment extends BaseEntity {
 	private Long id;
 
 	@Column(nullable = false)
-	private String contents;
+	private String content;
 
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "user_id", nullable = false)
@@ -46,4 +47,12 @@ public class Comment extends BaseEntity {
 
 	@OneToMany(mappedBy = "comment", cascade = CascadeType.ALL, orphanRemoval = true)
 	private List<Reply> replies;
+
+
+	@Builder
+	public Comment(String content, Song song, User user){
+		this.content = content;
+		this.song = song;
+		this.user = user;
+	}
 }
