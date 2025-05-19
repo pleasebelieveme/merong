@@ -33,7 +33,7 @@ public class AuthService {
     @Transactional
     public TokenResponse signIn(LoginRequest request) {
 
-        User user = userRepository.findByEmailAndPlatformAndIsDeleted(request.email(), false)
+        User user = userRepository.findByEmailAndIsDeleted(request.email(), false)
                 .orElseThrow(() -> new UserException(UserExceptionCode.USER_NOT_FOUND));
 
         checkPassword(request.password(), user.getPassword());

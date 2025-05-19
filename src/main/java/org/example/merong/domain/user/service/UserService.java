@@ -80,7 +80,7 @@ public class UserService {
     @PreAuthorize("hasAnyRole('owner', 'admin', 'user') and @userz.checkUserId(authentication.principal.id, #request.email())")
     public void modifyUser(UserModifyRequest request) {
 
-        User user = userRepository.findByEmailAndPlatformAndIsDeleted(
+        User user = userRepository.findByEmailAndIsDeleted(
                         request.email(), false
                 )
                 .orElseThrow(() -> new UserException(UserExceptionCode.USER_NOT_FOUND));
@@ -116,7 +116,7 @@ public class UserService {
     }
 
     private void checkEmail(String email) {
-        if (userRepository.existsByEmailAndPlatform(email)) {
+        if (userRepository.existsByEmail(email)) {
             throw new UserException(UserExceptionCode.ALREADY_EXISTS_EMAIL);
         }
     }
