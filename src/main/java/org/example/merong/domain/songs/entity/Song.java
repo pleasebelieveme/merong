@@ -79,6 +79,8 @@ public class Song extends BaseEntity {
 		this.singer = dto.getSinger();
 		this.genre = dto.getGenre();
 		this.description = dto.getDescription();
+		this.likeCount = 0L;
+		this.playCount = 0L;
 	}
 
 	// PATCH 요청 시
