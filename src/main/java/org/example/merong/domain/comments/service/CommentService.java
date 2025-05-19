@@ -20,23 +20,23 @@ public class CommentService {
 
     private final CommentRepository commentRepository;
 
-    public CommentResponseDto.Add saveComment(Long songId, CommentRequestDto.Add requestDto, Long userId) {
-
-        Comment comment = Comment.builder()
-                .content(requestDto.getContent())
-                .song(songService.findById(songId))
-                .user(userService.findById(userId))
-                .build();
-
-        commentRepository.save(comment);
-
-        return new CommentResponseDto.Add(
-                comment.getUser().getId(),
-                comment.getContent(),
-                comment.getCreatedAt(),
-                comment.getSong().getId()
-        );
-    }
+//    public CommentResponseDto.Add saveComment(Long songId, CommentRequestDto.Add requestDto, Long userId) {
+//
+//        Comment comment = Comment.builder()
+//                .content(requestDto.getContent())
+//                .song(songService.findById(songId))
+//                .user(userService.findById(userId))
+//                .build();
+//
+//        commentRepository.save(comment);
+//
+//        return new CommentResponseDto.Add(
+//                comment.getUser().getId(),
+//                comment.getContent(),
+//                comment.getCreatedAt(),
+//                comment.getSong().getId()
+//        );
+//    }
 
     @Transactional
     public CommentResponseDto.Update updateComment(Long commentId, CommentRequestDto.Update requestDto, Long userId){

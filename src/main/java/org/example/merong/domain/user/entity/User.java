@@ -48,4 +48,9 @@ public class User extends BaseEntity {
 		this.name = "deleted user" + UUID.randomUUID();
 		this.isDeleted = true;
 	}
+
+	public void changeProfileInformation(String name, String newPassword) {
+		this.name = name;
+		this.password = newPassword;
+	}
 }
