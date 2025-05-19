@@ -30,12 +30,15 @@ public class TokenExpiredConstants {
     private long refreshHour;
 
     public long getAccessTokenExpirationSeconds() {
-        return accessHour * accessMinute * accessSecond * MILLISECOND;
+        long totalSeconds = (accessHour * 3600) + (accessMinute * 60) + accessSecond;
+        return totalSeconds * MILLISECOND;
     }
 
     public long getRefreshTokenExpirationSeconds() {
-        return refreshHour * refreshMinute * refreshSecond * MILLISECOND;
+        long totalSeconds = (refreshHour * 3600) + (refreshMinute * 60) + refreshSecond;
+        return totalSeconds * MILLISECOND;
     }
+
 
     public Date getAccessTokenExpirationTime(Date date) {
         return new Date(date.getTime() + getAccessTokenExpirationSeconds());
