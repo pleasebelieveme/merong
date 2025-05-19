@@ -21,36 +21,38 @@ public class SongController {
 
     // 1. 노래 등록
     @PostMapping
-    public ResponseEntity<SongResponseDto> createSong(@AuthenticationPrincipal CustomUserDetails userDetail, @RequestBody SongRequestDto dto) {
+    public ResponseEntity<SongResponseDto.Create> createSong(@AuthenticationPrincipal CustomUserDetails userDetail, @RequestBody SongRequestDto dto) {
 
-//        return ResponseEntity.status(songService.createSong(userDetail.getUser().getId(), dto), HttpStatus.CREATED);
-        return null;
+        return new ResponseEntity<>(songService.createSong(userDetail.getUser().getId(), dto), HttpStatus.CREATED);
+
     }
 
     // 2. 내 노래 조회
     @GetMapping
-    public ResponseEntity<List<SongResponseDto>> getMySongs(@AuthenticationPrincipal CustomUserDetails userDetail) {
+    public ResponseEntity<List<SongResponseDto.Get>> getMySongs(@AuthenticationPrincipal CustomUserDetails userDetail) {
 
-//        return ResponseEntity.status(songService.getSongs(userDetail.getUser().getId()), HttpStatus.OK);
-        return null;
+        return new ResponseEntity<>(songService.getSongs(userDetail.getUser().getId()), HttpStatus.OK);
+
     }
     // 3. 노래 수정
     @PatchMapping("/{songid}")
-    public ResponseEntity<SongResponseDto> updateSong(@AuthenticationPrincipal CustomUserDetails userDetail,
+    public ResponseEntity<SongResponseDto.Update> updateSong(@AuthenticationPrincipal CustomUserDetails userDetail,
                                                       @PathVariable Long songId,
                                                       @RequestBody SongUpdateDto dto) {
 
-//        return ResponseEntity.status(songService.updateSong(userDetail.getUser().getId(), songId, dto), HttpStatus.OK);
-        return null;
+        return new ResponseEntity<>(songService.updateSong(userDetail.getUser().getId(), songId, dto), HttpStatus.OK);
+
     }
     // 4. 노래 삭제
     @DeleteMapping("/{songid}")
     public ResponseEntity<Void> deleteSong(@AuthenticationPrincipal CustomUserDetails userDetail,
                                            @PathVariable Long songid) {
 
-//        return ResponseEntity.status(songService.deleteSong(userDetail.getUser().getId(), songid), HttpStatus.NO_CONTENT);
+        songService.deleteSong(userDetail.getUser().getId(), songid);
 
-        return null;
+        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+
+
     }
 
 }
