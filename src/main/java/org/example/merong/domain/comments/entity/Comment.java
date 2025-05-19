@@ -55,4 +55,8 @@ public class Comment extends BaseEntity {
 		this.song = song;
 		this.user = user;
 	}
+
+	public void updateContent(String content){
+		this.content = content;
+	}
 }
