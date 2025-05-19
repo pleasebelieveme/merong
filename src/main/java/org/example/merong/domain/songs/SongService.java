@@ -5,7 +5,11 @@ import org.example.merong.domain.songs.dto.request.SongRequestDto;
 import org.example.merong.domain.songs.dto.request.SongUpdateDto;
 import org.example.merong.domain.songs.dto.response.SongResponseDto;
 import org.example.merong.domain.songs.entity.Song;
+import org.example.merong.domain.songs.exception.SongException;
+import org.example.merong.domain.songs.exception.SongsExceptionCode;
 import org.example.merong.domain.user.entity.User;
+import org.example.merong.domain.user.exception.UserException;
+import org.example.merong.domain.user.exception.UserExceptionCode;
 import org.example.merong.domain.user.repository.UserRepository;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -22,51 +26,52 @@ public class SongService {
     private final UserRepository userRepository;
 
     // 1. 노래 등록
-    public SongResponseDto createSong(Long userId, SongRequestDto dto) {
+    public SongResponseDto.Create createSong(Long userId, SongRequestDto dto) {
 
-        User currentUser = userRepository.findById(userId).orElseThrow(() -> new RuntimeException());
+        User currentUser = userRepository.findById(userId).orElseThrow(() -> new UserException(UserExceptionCode.USER_NOT_FOUND));
 
         Song song = songRepository.save(new Song(dto));
 
-        return new SongResponseDto(song);
+        return new SongResponseDto.Create(song);
     }
 
     // 2. 내 노래 전체 조회
     @Transactional(readOnly = true)
-    public List<SongResponseDto> getSongs(Long userId) {
+    public List<SongResponseDto.Get> getSongs(Long userId) {
 
-        User currentUser = userRepository.findById(userId).orElseThrow(() -> new RuntimeException());
+        User currentUser = userRepository.findById(userId).orElseThrow(() -> new UserException(UserExceptionCode.USER_NOT_FOUND));
 
-        return currentUser.getSongs().stream().map(SongResponseDto::new).collect(Collectors.toList());
+        return currentUser.getSongs().stream().map(SongResponseDto.Get::new).collect(Collectors.toList());
 
     }
-    // 3. 노래 수정
-    public SongResponseDto updateSong(Long userId, Long songId, SongUpdateDto dto) {
 
-        User currentUser = userRepository.findById(userId).orElseThrow(() -> new RuntimeException());
-        Song song = songRepository.findById(songId).orElseThrow(() -> new RuntimeException());
+    // 3. 노래 수정
+    public SongResponseDto.Update updateSong(Long userId, Long songId, SongUpdateDto dto) {
+
+        User currentUser = userRepository.findById(userId).orElseThrow(() -> new UserException(UserExceptionCode.USER_NOT_FOUND));
+        Song song = songRepository.findByIdOrElseThrow(songId);
 
         // 검증
-        if(currentUser.getId().equals(song.getUser().getId())) {
-           throw new RuntimeException("정보가 일치하지 않습니다.");
+        if (currentUser.getId().equals(song.getUser().getId())) {
+            throw new SongException(SongsExceptionCode.SONG_OWNERSHIP_EXCEPTION);
         }
 
         song.updateSong(dto);
         songRepository.save(song);
 
-        return new SongResponseDto(song);
+        return new SongResponseDto.Update(song);
 
     }
 
     // 4. 노래 삭제
     public void deleteSong(Long userId, Long songId) {
 
-        User currentUser = userRepository.findById(userId).orElseThrow(() -> new RuntimeException());
-        Song song = songRepository.findById(songId).orElseThrow(() -> new RuntimeException());
+        User currentUser = userRepository.findById(userId).orElseThrow(() -> new UserException(UserExceptionCode.USER_NOT_FOUND));
+        Song song = songRepository.findByIdOrElseThrow(songId);
 
         // 검증
-        if(currentUser.getId().equals(song.getUser().getId())) {
-            throw new RuntimeException("정보가 일치하지 않습니다.");
+        if (currentUser.getId().equals(song.getUser().getId())) {
+            throw new SongException(SongsExceptionCode.SONG_OWNERSHIP_EXCEPTION);
         }
 
         songRepository.delete(song);
