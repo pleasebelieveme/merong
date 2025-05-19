@@ -6,10 +6,10 @@ import org.springframework.data.jpa.repository.JpaRepository;
 
 public interface CommentRepository extends JpaRepository<Comment, Long> {
 
-    Optional<Comment> findByIdAndUserId(Long commentId,Long userId);
+    Optional<Comment> findById(Long commentId);
 
-    default Comment findByIdAndUserIdOrElseThrow(Long commentId,Long userId){
-        return findByIdAndUserId(commentId, userId)
+    default Comment findByIdOrElseThrow(Long commentId){
+        return findById(commentId)
                 .orElseThrow(()->
                         new IllegalArgumentException("존재하지 않는 댓글입니다.")
                 );
