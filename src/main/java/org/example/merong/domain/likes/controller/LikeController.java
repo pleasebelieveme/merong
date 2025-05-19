@@ -23,17 +23,17 @@ public class LikeController {
 
 	// 좋아요 추가
 	@PostMapping
-	public ResponseEntity<LikeResponseDto> doLike(
-		@RequestBody LikeRequestDto dto
+	public ResponseEntity<LikeResponseDto.Add> doLike(
+		@RequestBody LikeRequestDto.Add dto
 	){
-		LikeResponseDto responseDto = likeService.doLike(dto);
+		LikeResponseDto.Add responseDto = likeService.doLike(dto);
 		return new ResponseEntity<>(responseDto, HttpStatus.OK);
 	}
 
 	// 2. 좋아요 취소
 	@DeleteMapping
-	public ResponseEntity<Void> unLike(@RequestBody LikeRequestDto requestDto) {
-		likeService.unLike(requestDto);
-		return ResponseEntity.noContent().build();
+	public ResponseEntity<Void> unLike(@RequestBody LikeRequestDto.Add dto) {
+		likeService.unLike(dto);
+		return new ResponseEntity<>(HttpStatus.OK);
 	}
 }
