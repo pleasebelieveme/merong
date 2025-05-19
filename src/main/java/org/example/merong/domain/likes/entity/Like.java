@@ -1,7 +1,7 @@
 package org.example.merong.domain.likes.entity;
 
 import org.example.merong.domain.songs.entity.Song;
-import org.example.merong.domain.users.entity.User;
+import org.example.merong.domain.user.entity.User;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;

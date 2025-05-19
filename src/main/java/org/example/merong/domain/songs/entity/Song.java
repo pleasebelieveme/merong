@@ -4,10 +4,10 @@ import java.util.List;
 
 import org.example.merong.common.BaseEntity;
 import org.example.merong.domain.comments.entity.Comment;
+import org.example.merong.domain.user.entity.User;
 import org.example.merong.domain.songs.dto.request.SongRequestDto;
 import org.example.merong.domain.songs.dto.request.SongUpdateDto;
 import org.example.merong.domain.songs.enums.Genres;
-import org.example.merong.domain.users.entity.User;
 
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
@@ -47,6 +47,9 @@ public class Song extends BaseEntity {
 
 	@Column(nullable = false)
 	private String name;
+
+	@Column(nullable = false)
+	private String duration;
 
 	@Column(nullable = false)
 	private String singer;
