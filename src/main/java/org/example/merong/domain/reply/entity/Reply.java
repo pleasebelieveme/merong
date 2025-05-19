@@ -1,7 +1,7 @@
 package org.example.merong.domain.reply.entity;
 
 import lombok.Builder;
-import org.example.merong.common.BaseEntity;
+import org.example.merong.common.base.BaseEntity;
 import org.example.merong.domain.comments.entity.Comment;
 import org.example.merong.domain.user.entity.User;
 
@@ -47,7 +47,7 @@ public class Reply extends BaseEntity {
 		this.comment = comment;
 	}
 
-	public void updateReply(String content){
+	public void updateContent(String content){
 		this.content = content;
 	}
 
