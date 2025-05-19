@@ -4,7 +4,7 @@ import java.util.List;
 import java.util.UUID;
 
 import jakarta.persistence.*;
-import org.example.merong.common.BaseEntity;
+import org.example.merong.common.base.BaseEntity;
 import org.example.merong.domain.songs.entity.Song;
 
 import lombok.AllArgsConstructor;
