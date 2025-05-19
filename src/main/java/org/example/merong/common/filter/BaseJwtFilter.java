@@ -2,5 +2,5 @@ package org.example.merong.common.filter;
 
 import org.springframework.web.filter.OncePerRequestFilter;
 
-public class BaseJwtFilter extends OncePerRequestFilter {
+public abstract class BaseJwtFilter extends OncePerRequestFilter {
 }

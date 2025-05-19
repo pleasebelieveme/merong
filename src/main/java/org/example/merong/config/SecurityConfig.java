@@ -10,8 +10,8 @@ import org.springframework.security.config.annotation.web.configuration.EnableWe
 @EnableWebSecurity
 public class SecurityConfig {
 
-    private final RefreshJwtFilter refreshJwtFilter;
-    private final AccessJwtFilter accessJwtFilter;
-    private final ExceptionJwtFilter exceptionJwtFilter;
+//    private final RefreshJwtFilter refreshJwtFilter;
+//    private final AccessJwtFilter accessJwtFilter;
+//    private final ExceptionJwtFilter exceptionJwtFilter;
 
 }
