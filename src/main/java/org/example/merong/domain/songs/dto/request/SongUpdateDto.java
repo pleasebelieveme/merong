@@ -1,5 +1,6 @@
 package org.example.merong.domain.songs.dto.request;
 
+import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.Size;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -8,7 +9,6 @@ import org.example.merong.domain.songs.enums.Genres;
 
 @Getter
 @AllArgsConstructor
-@Builder
 public class SongUpdateDto {
 
     /*
