@@ -65,6 +65,8 @@ public class UserService {
         User user = userRepository.findByIdAndIsDeleted(userId, false)
                 .orElseThrow(() -> new UserException(UserExceptionCode.USER_NOT_FOUND));
 
+        checkPassword(request.password(), user.getPassword());
+
         user.withdraw();
         publisher.publishEvent(new UserWithDrawEvent(accessToken));
     }

@@ -15,4 +15,10 @@ public class UserPermissionChecker {
                 .map(user -> user.getId().equals(idFromToken))
                 .orElse(false);
     }
+
+    public boolean isAdmin(Long userId) {
+        return userRepository.findByIdAndIsDeleted(userId, false)
+                .map(user -> user.getEmail().equals("admin@example.com"))
+                .orElse(false);
+    }
 }
