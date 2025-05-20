@@ -2,12 +2,10 @@ package org.example.merong.domain.comments.controller;
 
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
-import org.example.merong.common.security.CustomUserDetails;
+import org.example.merong.common.dto.CommonResponse;
 import org.example.merong.domain.auth.dto.UserAuth;
 import org.example.merong.domain.comments.dto.request.CommentRequestDto;
-import org.example.merong.domain.comments.dto.request.CommentRequestDto.Add;
 import org.example.merong.domain.comments.dto.response.CommentResponseDto;
-import org.example.merong.domain.comments.dto.response.CommentResponseDto.Update;
 import org.example.merong.domain.comments.service.CommentService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -17,7 +15,6 @@ import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
@@ -50,13 +47,14 @@ public class CommentController {
     }
 
     @DeleteMapping("/api/comments/{commentId}")
-    public ResponseEntity<String> deleteComment(
+    public ResponseEntity<Void> deleteComment(
             @PathVariable Long commentId,
             @AuthenticationPrincipal UserAuth userAuth
     ){
         commentService.deleteComment(commentId, userAuth.getId());
 
-        return ResponseEntity.status(HttpStatus.NO_CONTENT).body("댓글이 삭제되었습니다.");
+
+        return ResponseEntity.noContent().build();
     }
 
 }
