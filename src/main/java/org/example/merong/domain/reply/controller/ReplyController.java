@@ -2,7 +2,7 @@ package org.example.merong.domain.reply.controller;
 
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
-import org.example.merong.common.security.CustomUserDetails;
+import org.example.merong.domain.auth.dto.UserAuth;
 import org.example.merong.domain.comments.dto.request.CommentRequestDto;
 import org.example.merong.domain.comments.dto.response.CommentResponseDto;
 import org.example.merong.domain.comments.dto.response.CommentResponseDto.Add;
@@ -30,10 +30,10 @@ public class ReplyController {
     public ResponseEntity<ReplyResponseDto.Add> createReply(
             @PathVariable Long commentId,
             @Valid @RequestBody ReplyRequestDto.Add requestDto,
-            @AuthenticationPrincipal CustomUserDetails userDetails
+            @AuthenticationPrincipal UserAuth userDetails
     ){
 
-        ReplyResponseDto.Add saveReply = replyService.saveReply(commentId, requestDto, userDetails.getUser().getId());
+        ReplyResponseDto.Add saveReply = replyService.saveReply(commentId, requestDto, userDetails.getId());
 
         return ResponseEntity.status(HttpStatus.CREATED).body(saveReply);
     }
@@ -42,9 +42,9 @@ public class ReplyController {
     public ResponseEntity<ReplyResponseDto.Update> updateReply(
             @PathVariable Long replyId,
             @Valid @RequestBody ReplyRequestDto.Update requestDto,
-            @AuthenticationPrincipal CustomUserDetails userDetails
+            @AuthenticationPrincipal UserAuth userDetails
     ){
-        ReplyResponseDto.Update updateReply = replyService.updateReply(replyId, requestDto, userDetails.getUser().getId());
+        ReplyResponseDto.Update updateReply = replyService.updateReply(replyId, requestDto, userDetails.getId());
 
         return ResponseEntity.status(HttpStatus.OK).body(updateReply);
     }
@@ -52,9 +52,9 @@ public class ReplyController {
     @DeleteMapping("/api/replies/{replyId}")
     public ResponseEntity<String> deleteReply(
             @PathVariable Long replyId,
-            @AuthenticationPrincipal CustomUserDetails userDetails
+            @AuthenticationPrincipal UserAuth userDetails
     ){
-        replyService.deleteReply(replyId, userDetails.getUser().getId());
+        replyService.deleteReply(replyId, userDetails.getId());
 
         return ResponseEntity.status(HttpStatus.NO_CONTENT).body("대댓글이 삭제되었습니다.");
     }

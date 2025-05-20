@@ -77,7 +77,7 @@ public class UserService {
      * @author 지송이
      */
     @Transactional
-    @PreAuthorize("hasAnyRole('owner', 'admin', 'user') and @userz.checkUserId(authentication.principal.id, #request.email())")
+    @PreAuthorize("hasAnyRole('USER')  and @userz.checkUserId(authentication.principal.id, #request.email())")
     public void modifyUser(UserModifyRequest request) {
 
         User user = userRepository.findByEmailAndIsDeleted(

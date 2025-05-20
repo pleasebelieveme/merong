@@ -2,7 +2,7 @@ package org.example.merong.domain.comments.controller;
 
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
-import org.example.merong.common.security.CustomUserDetails;
+import org.example.merong.domain.auth.dto.UserAuth;
 import org.example.merong.domain.comments.dto.request.CommentRequestDto;
 import org.example.merong.domain.comments.dto.request.CommentRequestDto.Add;
 import org.example.merong.domain.comments.dto.response.CommentResponseDto;
@@ -29,10 +29,10 @@ public class CommentController {
     public ResponseEntity<CommentResponseDto.Add> createComment(
             @PathVariable Long songId,
             @Valid @RequestBody CommentRequestDto.Add requestDto,
-            @AuthenticationPrincipal CustomUserDetails userDetails
+            @AuthenticationPrincipal UserAuth userDetails
     ){
 
-        CommentResponseDto.Add saveComment = commentService.saveComment(songId, requestDto, userDetails.getUser().getId());
+        CommentResponseDto.Add saveComment = commentService.saveComment(songId, requestDto, userDetails.getId());
 
         return ResponseEntity.status(HttpStatus.CREATED).body(saveComment);
     }
@@ -41,9 +41,9 @@ public class CommentController {
     public ResponseEntity<CommentResponseDto.Update> updateComment(
             @PathVariable Long commentId,
             @Valid @RequestBody CommentRequestDto.Update requestDto,
-            @AuthenticationPrincipal CustomUserDetails userDetails
+            @AuthenticationPrincipal UserAuth userDetails
     ){
-        CommentResponseDto.Update updateComment = commentService.updateComment(commentId, requestDto, userDetails.getUser().getId());
+        CommentResponseDto.Update updateComment = commentService.updateComment(commentId, requestDto, userDetails.getId());
 
         return ResponseEntity.status(HttpStatus.OK).body(updateComment);
     }
@@ -51,9 +51,9 @@ public class CommentController {
     @DeleteMapping("/api/comments/{commentId}")
     public ResponseEntity<String> deleteComment(
             @PathVariable Long commentId,
-            @AuthenticationPrincipal CustomUserDetails userDetails
+            @AuthenticationPrincipal UserAuth userDetails
     ){
-        commentService.deleteComment(commentId, userDetails.getUser().getId());
+        commentService.deleteComment(commentId, userDetails.getId());
 
         return ResponseEntity.status(HttpStatus.NO_CONTENT).body("댓글이 삭제되었습니다.");
     }
