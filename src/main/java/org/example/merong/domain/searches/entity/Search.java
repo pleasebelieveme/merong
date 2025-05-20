@@ -27,7 +27,7 @@ public class Search {
 	@Column(nullable = false)
 	private String searched_at;
 
-	// @ManyToOne
-	// @JoinColumn(name = "user_id")
-	// private User user;
+	@Column(nullable = false)
+	private Long count;
+
 }
