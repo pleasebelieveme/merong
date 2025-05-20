@@ -12,6 +12,8 @@ import org.example.merong.domain.reply.entity.Reply;
 import org.example.merong.domain.reply.repository.ReplyRepository;
 import org.example.merong.domain.songs.SongRepository;
 import org.example.merong.domain.user.entity.User;
+import org.example.merong.domain.user.exception.UserException;
+import org.example.merong.domain.user.exception.UserExceptionCode;
 import org.example.merong.domain.user.repository.UserRepository;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -89,7 +91,7 @@ public class ReplyService {
 
         // 검증
         if(!findReply.getUser().getId().equals(findUser.getId())){
-            throw new RuntimeException("정보가 일치하지 않습니다.");
+            throw new UserException(UserExceptionCode.NOT_OWNED_RESOURCE);
         }
 
         return findReply;

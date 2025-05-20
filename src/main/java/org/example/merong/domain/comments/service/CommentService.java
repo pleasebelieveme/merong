@@ -9,6 +9,8 @@ import org.example.merong.domain.songs.SongRepository;
 import org.example.merong.domain.songs.SongService;
 import org.example.merong.domain.songs.entity.Song;
 import org.example.merong.domain.user.entity.User;
+import org.example.merong.domain.user.exception.UserException;
+import org.example.merong.domain.user.exception.UserExceptionCode;
 import org.example.merong.domain.user.repository.UserRepository;
 import org.example.merong.domain.user.service.UserService;
 import org.springframework.stereotype.Service;
@@ -89,7 +91,7 @@ public class CommentService {
 
         // 검증
         if(!findComment.getUser().getId().equals(findUser.getId())){
-            throw new RuntimeException("정보가 일치하지 않습니다.");
+            throw new UserException(UserExceptionCode.NOT_OWNED_RESOURCE);
         }
 
         return findComment;
