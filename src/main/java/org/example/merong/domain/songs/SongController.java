@@ -1,5 +1,6 @@
 package org.example.merong.domain.songs;
 
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.example.merong.domain.auth.dto.UserAuth;
 import org.example.merong.domain.songs.dto.request.SongRequestDto;
@@ -26,7 +27,7 @@ public class SongController {
      * @return 등록결과물 반환
      */
     @PostMapping
-    public ResponseEntity<SongResponseDto.Create> createSong(@AuthenticationPrincipal UserAuth auth, @RequestBody SongRequestDto dto) {
+    public ResponseEntity<SongResponseDto.Create> createSong(@AuthenticationPrincipal UserAuth auth, @RequestBody @Valid SongRequestDto dto) {
 
         return new ResponseEntity<>(songService.createSong(auth.getId(), dto), HttpStatus.CREATED);
 
@@ -54,7 +55,7 @@ public class SongController {
     @PatchMapping("/{songId}")
     public ResponseEntity<SongResponseDto.Update> updateSong(@AuthenticationPrincipal UserAuth auth,
                                                       @PathVariable Long songId,
-                                                      @RequestBody SongUpdateDto dto) {
+                                                      @RequestBody @Valid SongUpdateDto dto) {
 
         return new ResponseEntity<>(songService.updateSong(auth.getId(), songId, dto), HttpStatus.OK);
 
