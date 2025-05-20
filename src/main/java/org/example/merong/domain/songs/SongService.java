@@ -30,7 +30,7 @@ public class SongService {
 
         User currentUser = userRepository.findById(userId).orElseThrow(() -> new UserException(UserExceptionCode.USER_NOT_FOUND));
 
-        Song song = songRepository.save(new Song(dto));
+        Song song = songRepository.save(new Song(currentUser, dto));
 
         return new SongResponseDto.Create(song);
     }
@@ -52,7 +52,7 @@ public class SongService {
         Song song = songRepository.findByIdOrElseThrow(songId);
 
         // 검증
-        if (currentUser.getId().equals(song.getUser().getId())) {
+        if (!currentUser.getId().equals(song.getUser().getId())) {
             throw new SongException(SongsExceptionCode.SONG_OWNERSHIP_EXCEPTION);
         }
 
@@ -70,7 +70,7 @@ public class SongService {
         Song song = songRepository.findByIdOrElseThrow(songId);
 
         // 검증
-        if (currentUser.getId().equals(song.getUser().getId())) {
+        if (!currentUser.getId().equals(song.getUser().getId())) {
             throw new SongException(SongsExceptionCode.SONG_OWNERSHIP_EXCEPTION);
         }
 
