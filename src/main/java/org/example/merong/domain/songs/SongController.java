@@ -1,7 +1,7 @@
 package org.example.merong.domain.songs;
 
 import lombok.RequiredArgsConstructor;
-import org.example.merong.common.security.CustomUserDetails;
+import org.example.merong.domain.auth.dto.UserAuth;
 import org.example.merong.domain.songs.dto.request.SongRequestDto;
 import org.example.merong.domain.songs.dto.request.SongUpdateDto;
 import org.example.merong.domain.songs.dto.response.SongResponseDto;
@@ -21,34 +21,34 @@ public class SongController {
 
     // 1. 노래 등록
     @PostMapping
-    public ResponseEntity<SongResponseDto.Create> createSong(@AuthenticationPrincipal CustomUserDetails userDetail, @RequestBody SongRequestDto dto) {
+    public ResponseEntity<SongResponseDto.Create> createSong(@AuthenticationPrincipal UserAuth userDetail, @RequestBody SongRequestDto dto) {
 
-        return new ResponseEntity<>(songService.createSong(userDetail.getUser().getId(), dto), HttpStatus.CREATED);
+        return new ResponseEntity<>(songService.createSong(userDetail.getId(), dto), HttpStatus.CREATED);
 
     }
 
     // 2. 내 노래 조회
     @GetMapping
-    public ResponseEntity<List<SongResponseDto.Get>> getMySongs(@AuthenticationPrincipal CustomUserDetails userDetail) {
+    public ResponseEntity<List<SongResponseDto.Get>> getMySongs(@AuthenticationPrincipal UserAuth userDetail) {
 
-        return new ResponseEntity<>(songService.getSongs(userDetail.getUser().getId()), HttpStatus.OK);
+        return new ResponseEntity<>(songService.getSongs(userDetail.getId()), HttpStatus.OK);
 
     }
     // 3. 노래 수정
     @PatchMapping("/{songid}")
-    public ResponseEntity<SongResponseDto.Update> updateSong(@AuthenticationPrincipal CustomUserDetails userDetail,
+    public ResponseEntity<SongResponseDto.Update> updateSong(@AuthenticationPrincipal UserAuth userDetail,
                                                       @PathVariable Long songId,
                                                       @RequestBody SongUpdateDto dto) {
 
-        return new ResponseEntity<>(songService.updateSong(userDetail.getUser().getId(), songId, dto), HttpStatus.OK);
+        return new ResponseEntity<>(songService.updateSong(userDetail.getId(), songId, dto), HttpStatus.OK);
 
     }
     // 4. 노래 삭제
     @DeleteMapping("/{songid}")
-    public ResponseEntity<Void> deleteSong(@AuthenticationPrincipal CustomUserDetails userDetail,
+    public ResponseEntity<Void> deleteSong(@AuthenticationPrincipal UserAuth userDetail,
                                            @PathVariable Long songid) {
 
-        songService.deleteSong(userDetail.getUser().getId(), songid);
+        songService.deleteSong(userDetail.getId(), songid);
 
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
 
