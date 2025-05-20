@@ -19,39 +19,60 @@ public class SongController {
 
     private final SongService songService;
 
-    // 1. 노래 등록
+    /**
+     * 1. 노래 등록
+     * @param auth
+     * @param dto
+     * @return 등록결과물 반환
+     */
     @PostMapping
-    public ResponseEntity<SongResponseDto.Create> createSong(@AuthenticationPrincipal UserAuth userDetail, @RequestBody SongRequestDto dto) {
+    public ResponseEntity<SongResponseDto.Create> createSong(@AuthenticationPrincipal UserAuth auth, @RequestBody SongRequestDto dto) {
 
-        return new ResponseEntity<>(songService.createSong(userDetail.getId(), dto), HttpStatus.CREATED);
+        return new ResponseEntity<>(songService.createSong(auth.getId(), dto), HttpStatus.CREATED);
 
     }
 
-    // 2. 내 노래 조회
+    /**
+     * 2. 내가 등록한 노래 조회
+     * @param auth
+     * @return 내가 등록한 노래 리스트 반환
+     */
     @GetMapping
-    public ResponseEntity<List<SongResponseDto.Get>> getMySongs(@AuthenticationPrincipal UserAuth userDetail) {
+    public ResponseEntity<List<SongResponseDto.Get>> getMySongs(@AuthenticationPrincipal UserAuth auth) {
 
-        return new ResponseEntity<>(songService.getSongs(userDetail.getId()), HttpStatus.OK);
+        return new ResponseEntity<>(songService.getSongs(auth.getId()), HttpStatus.OK);
 
     }
-    // 3. 노래 수정
-    @PatchMapping("/{songid}")
-    public ResponseEntity<SongResponseDto.Update> updateSong(@AuthenticationPrincipal UserAuth userDetail,
+
+    /**
+     * 3. 등록 노래 수정
+     * @param auth
+     * @param songId
+     * @param dto
+     * @return 수정 여부 반환
+     */
+    @PatchMapping("/{songId}")
+    public ResponseEntity<SongResponseDto.Update> updateSong(@AuthenticationPrincipal UserAuth auth,
                                                       @PathVariable Long songId,
                                                       @RequestBody SongUpdateDto dto) {
 
-        return new ResponseEntity<>(songService.updateSong(userDetail.getId(), songId, dto), HttpStatus.OK);
+        return new ResponseEntity<>(songService.updateSong(auth.getId(), songId, dto), HttpStatus.OK);
 
     }
-    // 4. 노래 삭제
-    @DeleteMapping("/{songid}")
-    public ResponseEntity<Void> deleteSong(@AuthenticationPrincipal UserAuth userDetail,
-                                           @PathVariable Long songid) {
 
-        songService.deleteSong(userDetail.getId(), songid);
+    /**
+     * 4. 등록 노래 삭제
+     * @param auth
+     * @param songId
+     * @return NO_CONTENT
+     */
+    @DeleteMapping("/{songId}")
+    public ResponseEntity<Void> deleteSong(@AuthenticationPrincipal UserAuth auth,
+                                           @PathVariable Long songId) {
+
+        songService.deleteSong(auth.getId(), songId);
 
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
-
 
     }
 
