@@ -13,11 +13,13 @@ import org.example.merong.jwt.constants.JwtConstants;
 import org.example.merong.jwt.service.JwtService;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.context.SecurityContext;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.filter.OncePerRequestFilter;
 
 import java.io.IOException;
+import java.util.List;
 
 @RequiredArgsConstructor
 public abstract class BaseJwtFilter extends OncePerRequestFilter {
@@ -54,7 +56,8 @@ public abstract class BaseJwtFilter extends OncePerRequestFilter {
         UserAuth userAuth = jwtService.getUserAuth(token);
         Authentication authentication = new UsernamePasswordAuthenticationToken(
                 userAuth,
-                token
+                token,
+                List.of(new SimpleGrantedAuthority("ROLE_USER"))
         );
 
         SecurityContext securityContext = SecurityContextHolder.createEmptyContext();
