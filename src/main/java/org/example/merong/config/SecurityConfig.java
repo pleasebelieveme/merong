@@ -3,7 +3,6 @@ package org.example.merong.config;
 import org.example.merong.common.filter.AccessJwtFilter;
 import org.example.merong.common.filter.ExceptionJwtFilter;
 import org.example.merong.common.filter.RefreshJwtFilter;
-import org.example.merong.common.security.CustomUserDetailsService;
 import org.example.merong.jwt.service.JwtService;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -31,13 +30,7 @@ public class SecurityConfig {
     private final AccessJwtFilter accessJwtFilter;
     private final ExceptionJwtFilter exceptionJwtFilter;
 
-    private final JwtService jwtService;
-    private final CustomUserDetailsService customUserDetailsService;
-
-    public SecurityConfig(JwtService jwtService, CustomUserDetailsService customUserDetailsService) {
-        this.jwtService = jwtService;
-        this.customUserDetailsService = customUserDetailsService;
-
+    public SecurityConfig(JwtService jwtService) {
         this.refreshJwtFilter = new RefreshJwtFilter(jwtService);
         this.accessJwtFilter = new AccessJwtFilter(jwtService);
         this.exceptionJwtFilter = new ExceptionJwtFilter();
@@ -66,7 +59,6 @@ public class SecurityConfig {
                 .addFilterBefore(refreshJwtFilter, UsernamePasswordAuthenticationFilter.class)
                 .addFilterBefore(accessJwtFilter, RefreshJwtFilter.class)
                 .addFilterBefore(exceptionJwtFilter, AccessJwtFilter.class)
-                .userDetailsService(customUserDetailsService)
                 .build();
     }
 
