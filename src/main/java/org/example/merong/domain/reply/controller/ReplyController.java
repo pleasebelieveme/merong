@@ -3,12 +3,8 @@ package org.example.merong.domain.reply.controller;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.example.merong.domain.auth.dto.UserAuth;
-import org.example.merong.domain.comments.dto.request.CommentRequestDto;
-import org.example.merong.domain.comments.dto.response.CommentResponseDto;
-import org.example.merong.domain.comments.dto.response.CommentResponseDto.Add;
 import org.example.merong.domain.reply.dto.request.ReplyRequestDto;
 import org.example.merong.domain.reply.dto.response.ReplyResponseDto;
-import org.example.merong.domain.reply.entity.Reply;
 import org.example.merong.domain.reply.service.ReplyService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -30,10 +26,10 @@ public class ReplyController {
     public ResponseEntity<ReplyResponseDto.Add> createReply(
             @PathVariable Long commentId,
             @Valid @RequestBody ReplyRequestDto.Add requestDto,
-            @AuthenticationPrincipal UserAuth userDetails
+            @AuthenticationPrincipal UserAuth userAuth
     ){
 
-        ReplyResponseDto.Add saveReply = replyService.saveReply(commentId, requestDto, userDetails.getId());
+        ReplyResponseDto.Add saveReply = replyService.saveReply(commentId, requestDto, userAuth.getId());
 
         return ResponseEntity.status(HttpStatus.CREATED).body(saveReply);
     }
@@ -42,21 +38,21 @@ public class ReplyController {
     public ResponseEntity<ReplyResponseDto.Update> updateReply(
             @PathVariable Long replyId,
             @Valid @RequestBody ReplyRequestDto.Update requestDto,
-            @AuthenticationPrincipal UserAuth userDetails
+            @AuthenticationPrincipal UserAuth userAuth
     ){
-        ReplyResponseDto.Update updateReply = replyService.updateReply(replyId, requestDto, userDetails.getId());
+        ReplyResponseDto.Update updateReply = replyService.updateReply(replyId, requestDto, userAuth.getId());
 
         return ResponseEntity.status(HttpStatus.OK).body(updateReply);
     }
 
     @DeleteMapping("/api/replies/{replyId}")
-    public ResponseEntity<String> deleteReply(
+    public ResponseEntity<Void> deleteReply(
             @PathVariable Long replyId,
-            @AuthenticationPrincipal UserAuth userDetails
+            @AuthenticationPrincipal UserAuth userAuth
     ){
-        replyService.deleteReply(replyId, userDetails.getId());
+        replyService.deleteReply(replyId, userAuth.getId());
 
-        return ResponseEntity.status(HttpStatus.NO_CONTENT).body("대댓글이 삭제되었습니다.");
+        return ResponseEntity.noContent().build();
     }
 
 
