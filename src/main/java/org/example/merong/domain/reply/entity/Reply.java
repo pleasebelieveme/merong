@@ -1,5 +1,6 @@
 package org.example.merong.domain.reply.entity;
 
+import lombok.Builder;
 import org.example.merong.common.base.BaseEntity;
 import org.example.merong.domain.comments.entity.Comment;
 import org.example.merong.domain.user.entity.User;
@@ -29,7 +30,7 @@ public class Reply extends BaseEntity {
 	private Long id;
 
 	@Column(nullable = false)
-	private String contents;
+	private String content;
 
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "user_id", nullable = false)
@@ -39,6 +40,16 @@ public class Reply extends BaseEntity {
 	@JoinColumn(name = "comment_id", nullable = false)
 	private Comment comment;
 
+	@Builder
+	public Reply(String content, User user, Comment comment){
+		this.content = content;
+		this.user = user;
+		this.comment = comment;
+	}
+
+	public void updateContent(String content){
+		this.content = content;
+	}
 
 
 }
