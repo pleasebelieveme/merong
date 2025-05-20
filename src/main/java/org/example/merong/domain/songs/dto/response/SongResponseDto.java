@@ -99,6 +99,16 @@ public class SongResponseDto {
     @Getter
     public static class Update {
 
+        /* PK
+        유저 PK
+        노래 제목
+        가수
+        장르
+        작성일
+        수정일
+        설명
+         */
+
         private final Long id;
         private final Long userId;
         private final String name;

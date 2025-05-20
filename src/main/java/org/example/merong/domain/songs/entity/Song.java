@@ -49,9 +49,6 @@ public class Song extends BaseEntity {
 	private String name;
 
 	@Column(nullable = false)
-	private String duration;
-
-	@Column(nullable = false)
 	private String singer;
 
 	@Column(nullable = false)
@@ -73,8 +70,8 @@ public class Song extends BaseEntity {
 	@OneToMany(mappedBy = "song", cascade = CascadeType.ALL, orphanRemoval = true)
 	private List<Comment> comments;
 
-	public Song(SongRequestDto dto) {
-		this.user = dto.getUser();
+	public Song(User user, SongRequestDto dto) {
+		this.user = user;
 		this.name = dto.getName();
 		this.singer = dto.getSinger();
 		this.genre = dto.getGenre();
@@ -85,9 +82,9 @@ public class Song extends BaseEntity {
 
 	// PATCH 요청 시
 	public void updateSong(SongUpdateDto dto) {
-		this.name = dto.getName();
-		this.singer = dto.getSinger();
-		this.genre = dto.getGenre();
-		this.description = dto.getDescription();
+		if(dto.getName() != null) this.name = dto.getName();
+		if(dto.getSinger() != null) this.singer = dto.getSinger();
+		if(dto.getGenre() != null) this.genre = dto.getGenre();
+		if(dto.getDescription() != null) this.description = dto.getDescription();
 	}
 }

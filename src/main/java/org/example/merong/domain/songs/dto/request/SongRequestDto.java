@@ -10,14 +10,11 @@ import org.example.merong.domain.user.entity.User;
 public class SongRequestDto {
 
     /*
-    유저
     노래 제목
     아티스트
     장르
     설명
      */
-
-    private final User user;
 
     @NotBlank
     @Size(max = 30, message = "노래 제목은 30자 까지 입력 가능합니다.")
@@ -33,8 +30,7 @@ public class SongRequestDto {
     @Size(message = "설명은 최대 255자까지 입력 가능합니다.")
     private final String description;
 
-    public SongRequestDto(User user, String name, String singer, Genres genre, String description) {
-        this.user = user;
+    public SongRequestDto(String name, String singer, Genres genre, String description) {
         this.name = name;
         this.singer = singer;
         this.genre = genre;
