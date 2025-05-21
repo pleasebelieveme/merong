@@ -2,6 +2,7 @@ package org.example.merong.domain.songs.entity;
 
 import java.util.List;
 
+import jakarta.persistence.*;
 import org.example.merong.common.base.BaseEntity;
 import org.example.merong.domain.comments.entity.Comment;
 import org.example.merong.domain.user.entity.User;
@@ -9,17 +10,6 @@ import org.example.merong.domain.songs.dto.request.SongRequestDto;
 import org.example.merong.domain.songs.dto.request.SongUpdateDto;
 import org.example.merong.domain.songs.enums.Genres;
 
-import jakarta.persistence.CascadeType;
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.FetchType;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
-import jakarta.persistence.JoinColumn;
-import jakarta.persistence.ManyToOne;
-import jakarta.persistence.OneToMany;
-import jakarta.persistence.Table;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -52,6 +42,7 @@ public class Song extends BaseEntity {
 	private String singer;
 
 	@Column(nullable = false)
+	@Enumerated(EnumType.STRING)
 	private Genres genre;
 
 	@Column(nullable = false)
