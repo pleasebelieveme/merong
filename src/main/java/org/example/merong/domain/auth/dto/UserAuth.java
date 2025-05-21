@@ -8,8 +8,8 @@ import org.example.merong.domain.user.entity.User;
 @Getter
 public class UserAuth {
 
-    private final Long id;
-    private final String email;
+    private Long id;
+    private String email;
 
     public static UserAuth from(User user) {
         return UserAuth.builder()

@@ -1,8 +1,9 @@
-package org.example.merong.domain.songs;
+package org.example.merong.domain.songs.controller;
 
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.example.merong.domain.auth.dto.UserAuth;
+import org.example.merong.domain.songs.service.SongService;
 import org.example.merong.domain.songs.dto.request.SongRequestDto;
 import org.example.merong.domain.songs.dto.request.SongUpdateDto;
 import org.example.merong.domain.songs.dto.response.SongResponseDto;
@@ -75,6 +76,19 @@ public class SongController {
 
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
 
+    }
+
+    /**
+     * 5. 노래 검색
+     */
+    @GetMapping("/search")
+    public ResponseEntity<List<SongResponseDto.Get>> search(@RequestParam String keyword) {
+        return ResponseEntity.ok(songService.search(keyword));
+    }
+
+    @GetMapping("/popular")
+    public ResponseEntity<List<String>> popularKeywords() {
+        return ResponseEntity.ok(songService.getPopularKeywords());
     }
 
 }

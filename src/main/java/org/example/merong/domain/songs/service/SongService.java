@@ -1,6 +1,7 @@
-package org.example.merong.domain.songs;
+package org.example.merong.domain.songs.service;
 
 import lombok.RequiredArgsConstructor;
+import org.example.merong.domain.songs.repository.SongRepository;
 import org.example.merong.domain.songs.dto.request.SongRequestDto;
 import org.example.merong.domain.songs.dto.request.SongUpdateDto;
 import org.example.merong.domain.songs.dto.response.SongResponseDto;
@@ -11,8 +12,10 @@ import org.example.merong.domain.user.entity.User;
 import org.example.merong.domain.user.exception.UserException;
 import org.example.merong.domain.user.exception.UserExceptionCode;
 import org.example.merong.domain.user.repository.UserRepository;
+import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.cache.annotation.Cacheable;
 
 import java.util.List;
 import java.util.stream.Collectors;
@@ -24,6 +27,7 @@ public class SongService {
 
     private final SongRepository songRepository;
     private final UserRepository userRepository;
+    private final RedisTemplate<String, Object> redisTemplate;
 
     // 1. 노래 등록
     public SongResponseDto.Create createSong(Long userId, SongRequestDto dto) {
@@ -76,5 +80,20 @@ public class SongService {
 
         songRepository.delete(song);
 
+    }
+
+    @Cacheable(value = "songSearchCache", key = "#keyword")
+    public List<SongResponseDto.Get> search(String keyword) {
+        redisTemplate.opsForZSet().incrementScore("popular_keywords", keyword, 1);
+
+        return songRepository.searchByKeyword(keyword).stream()
+                .map(SongResponseDto::fromEntity)
+                .collect(Collectors.toList());
+
+    }
+
+    public List<String> getPopularKeywords() {
+        return redisTemplate.opsForZSet().reverseRange("popular_keywords", 0, 9)
+                .stream().map(Object::toString).collect(Collectors.toList());
     }
 }

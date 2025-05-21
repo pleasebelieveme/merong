@@ -50,6 +50,8 @@ public class User extends BaseEntity {
 	}
 
 	public void changeProfileInformation(String name, String newPassword) {
+
+		QUser qUser = QUser.user;
 		this.name = name;
 		this.password = newPassword;
 	}

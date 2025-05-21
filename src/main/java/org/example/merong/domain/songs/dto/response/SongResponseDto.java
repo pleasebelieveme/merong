@@ -128,4 +128,8 @@ public class SongResponseDto {
             this.description = song.getDescription();
         }
     }
+
+    public static Get fromEntity(Song song) {
+        return new Get(song);
+    }
 }
