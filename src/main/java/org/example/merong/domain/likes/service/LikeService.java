@@ -49,7 +49,7 @@ public class LikeService {
 	}
 
 	@Transactional
-	public void unLike(Long songId, Long userId) {
+	public void unLike(Long songId, Long likeId, Long userId) {
 
 		// 좋아요가 존재하는지 확인
 		Like findLike = likeRepository.findByUserIdAndSongIdOrElseThrow(songId, userId);
