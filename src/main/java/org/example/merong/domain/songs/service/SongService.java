@@ -86,18 +86,19 @@ public class SongService {
 
     }
 
-    // 노래 검색
+    // 5. 노래 검색
     public List<SongResponseDto.Get> search(String keyword) {
         recordSearchKeyword(keyword); // 캐시 여부 상관없이 무조건 실행
         return getSearchResults(keyword); // 캐시 적용 대상
     }
 
-    // 인기 검색어 기록 (ZSet 점수 증가)
+    // 인기 검색어 기록 (Redis: ZSet 점수 증가)
     // : 캐시 적중 시 인기 검색어 기록이 누락되어 메서드 분리
     private void recordSearchKeyword(String keyword) {
         redisTemplate.opsForZSet().incrementScore("popular_keywords", keyword, 1);
     }
 
+    // 검색 결과 캐시 (Caffeine + @Cacheable)
     @Cacheable(value = "songSearchCache", key = "#keyword")
     public List<SongResponseDto.Get> getSearchResults(String keyword) {
         return songRepository.searchByKeyword(keyword)
@@ -105,7 +106,7 @@ public class SongService {
                 .collect(Collectors.toList());
     }
 
-    // 인기 검색어 조회 (ZSet 내 상위 10)
+    // 인기 검색어 조회 (Redis: ZSet 내 상위 10)
     public List<String> getPopularKeywords() {
         return redisTemplate.opsForZSet().reverseRange("popular_keywords", 0, 9)
                 .stream().map(Object::toString).collect(Collectors.toList());
