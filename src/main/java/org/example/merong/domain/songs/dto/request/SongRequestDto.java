@@ -1,6 +1,7 @@
 package org.example.merong.domain.songs.dto.request;
 
 import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
 import lombok.Getter;
 import org.example.merong.domain.songs.enums.Genres;
@@ -24,7 +25,7 @@ public class SongRequestDto {
     @Size(max = 25, message = "가수 이름은 25자까지 입력 가능합니다.")
     private final String singer;
 
-    @NotBlank
+    @NotNull
     private final Genres genre;
 
     @Size(message = "설명은 최대 255자까지 입력 가능합니다.")

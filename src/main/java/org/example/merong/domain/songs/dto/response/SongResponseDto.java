@@ -1,7 +1,13 @@
 package org.example.merong.domain.songs.dto.response;
 
+import com.querydsl.core.annotations.QueryProjection;
+import com.querydsl.core.types.dsl.DateTimePath;
+import com.querydsl.core.types.dsl.EnumPath;
+import com.querydsl.core.types.dsl.NumberPath;
+import com.querydsl.core.types.dsl.StringPath;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import org.example.merong.domain.comments.dto.response.CommentResponseDto;
 import org.example.merong.domain.songs.entity.Song;
 import org.example.merong.domain.songs.enums.Genres;
@@ -94,6 +100,42 @@ public class SongResponseDto {
                     )).toList();
         }
     }
+
+    @Getter
+    @NoArgsConstructor
+    public static class Search {
+
+        /*
+        노래 제목
+        가수
+        장르
+        작성일(발매일)
+        좋아요 수
+        재생 수
+        설명
+         */
+
+        private String title;
+        private String singer;
+        private Genres genre;
+        private LocalDateTime createdAt;
+        private Long likeCount;
+        private Long playCount;
+        private String description;
+
+        @QueryProjection
+        public Search(String title , String singer,Genres genre,LocalDateTime createdAt, Long likeCount, Long playCount, String description){
+            this.title = title;
+            this.singer = singer;
+            this.genre = genre;
+            this.createdAt = createdAt;
+            this.likeCount = likeCount;
+            this.playCount = playCount;
+            this.description = description;
+        }
+    }
+
+
 
     @Getter
     public static class Update {
