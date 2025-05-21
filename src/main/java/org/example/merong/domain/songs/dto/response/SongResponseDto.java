@@ -8,7 +8,6 @@ import org.example.merong.domain.songs.enums.Genres;
 
 import java.time.LocalDateTime;
 import java.util.List;
-import java.util.stream.Collectors;
 
 @Getter
 @AllArgsConstructor
@@ -38,7 +37,7 @@ public class SongResponseDto {
     public Create(Song song) {
         this.id = song.getId();
         this.userId = song.getUser().getId();
-        this.name = song.getName();
+        this.name = song.getTitle();
         this.singer = song.getSinger();
         this.genre = song.getGenre();
         this.createdAt = song.getCreatedAt();
@@ -79,7 +78,7 @@ public class SongResponseDto {
         public Get(Song song) {
             this.id = song.getId();
             this.userId = song.getUser().getId();
-            this.name = song.getName();
+            this.name = song.getTitle();
             this.singer = song.getSinger();
             this.genre = song.getGenre();
             this.createdAt = song.getCreatedAt();
@@ -121,7 +120,7 @@ public class SongResponseDto {
         public Update(Song song) {
             this.id = song.getId();
             this.userId = song.getUser().getId();
-            this.name = song.getName();
+            this.name = song.getTitle();
             this.singer = song.getSinger();
             this.genre = song.getGenre();
             this.createdAt = song.getCreatedAt();

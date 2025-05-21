@@ -46,7 +46,7 @@ public class Song extends BaseEntity {
 	private Long id;
 
 	@Column(nullable = false)
-	private String name;
+	private String title;
 
 	@Column(nullable = false)
 	private String singer;
@@ -72,7 +72,7 @@ public class Song extends BaseEntity {
 
 	public Song(User user, SongRequestDto dto) {
 		this.user = user;
-		this.name = dto.getName();
+		this.title = dto.getName();
 		this.singer = dto.getSinger();
 		this.genre = dto.getGenre();
 		this.description = dto.getDescription();
@@ -82,7 +82,7 @@ public class Song extends BaseEntity {
 
 	// PATCH 요청 시
 	public void updateSong(SongUpdateDto dto) {
-		if(dto.getName() != null) this.name = dto.getName();
+		if(dto.getName() != null) this.title = dto.getName();
 		if(dto.getSinger() != null) this.singer = dto.getSinger();
 		if(dto.getGenre() != null) this.genre = dto.getGenre();
 		if(dto.getDescription() != null) this.description = dto.getDescription();
