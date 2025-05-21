@@ -77,4 +77,8 @@ public class SongService {
         songRepository.delete(song);
 
     }
+
+    public List<SongResponseDto.Get> searchSongs(String name, String singer, String sort, String orderBy) {
+        return songRepository.findByDynamicQuery(name, singer, sort, orderBy);
+    }
 }

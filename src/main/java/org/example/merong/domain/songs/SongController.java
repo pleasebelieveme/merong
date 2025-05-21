@@ -77,4 +77,15 @@ public class SongController {
 
     }
 
+    @GetMapping("/search")
+    public ResponseEntity<List<SongResponseDto.Get>> searchSongs(
+        @RequestParam(required = false) String name,
+        @RequestParam(required = false) String singer,
+        @RequestParam(defaultValue = "createdAt") String sort,
+        @RequestParam(defaultValue = "desc") String orderBy
+    ) {
+        List<SongResponseDto.Get> songs = songService.searchSongs(name, singer, sort, orderBy);
+        return ResponseEntity.ok(songs);
+    }
+
 }

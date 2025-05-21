@@ -93,6 +93,10 @@ public class SongResponseDto {
                             comment.getUpdatedAt()
                     )).toList();
         }
+
+        public static SongResponseDto.Get fromEntity(Song song) {
+            return new SongResponseDto.Get(song);
+        }
     }
 
     @Getter
