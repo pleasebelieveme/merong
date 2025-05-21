@@ -10,7 +10,6 @@ public class FilterConstants {
 
     public static final List<Route> WHITE_LIST = List.of(
             new Route("/api/auth/signin", "POST"),
-            new Route("/api/auth/reissue", "POST"),
             new Route("/api/users", "POST")
     );
 
