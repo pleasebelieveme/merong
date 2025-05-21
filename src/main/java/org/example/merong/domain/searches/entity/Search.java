@@ -10,6 +10,8 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
+import java.time.LocalDateTime;
+
 @Getter
 @Entity
 @NoArgsConstructor
@@ -25,9 +27,19 @@ public class Search {
 	private String keyword;
 
 	@Column(nullable = false)
-	private String searched_at;
+	private LocalDateTime searchedAt;
 
 	@Column(nullable = false)
 	private Long count;
 
+	public Search(String keyword) {
+		this.keyword = keyword;
+		this.searchedAt = LocalDateTime.now();
+		this.count = 0L;
+	}
+
+	public void update() {
+		this.count++;
+		this.searchedAt = LocalDateTime.now();
+	}
 }
