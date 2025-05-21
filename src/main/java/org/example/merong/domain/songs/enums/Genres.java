@@ -1,5 +1,8 @@
 package org.example.merong.domain.songs.enums;
 
+import lombok.Getter;
+
+@Getter
 public enum Genres {
 
     K_POP,
