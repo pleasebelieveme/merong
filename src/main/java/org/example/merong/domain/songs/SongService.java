@@ -1,9 +1,12 @@
 package org.example.merong.domain.songs;
 
+import com.querydsl.core.types.dsl.PathBuilder;
 import lombok.RequiredArgsConstructor;
 import org.example.merong.domain.songs.dto.request.SongRequestDto;
+import org.example.merong.domain.songs.dto.request.SongSearchRequestParamDto;
 import org.example.merong.domain.songs.dto.request.SongUpdateDto;
 import org.example.merong.domain.songs.dto.response.SongResponseDto;
+import org.example.merong.domain.songs.dto.response.SongResponseDto.Search;
 import org.example.merong.domain.songs.entity.Song;
 import org.example.merong.domain.songs.exception.SongException;
 import org.example.merong.domain.songs.exception.SongsExceptionCode;
@@ -11,6 +14,7 @@ import org.example.merong.domain.user.entity.User;
 import org.example.merong.domain.user.exception.UserException;
 import org.example.merong.domain.user.exception.UserExceptionCode;
 import org.example.merong.domain.user.repository.UserRepository;
+import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -24,6 +28,7 @@ public class SongService {
 
     private final SongRepository songRepository;
     private final UserRepository userRepository;
+    private final SongSearch songSearch;
 
     // 1. 노래 등록
     public SongResponseDto.Create createSong(Long userId, SongRequestDto dto) {
@@ -75,6 +80,32 @@ public class SongService {
         }
 
         songRepository.delete(song);
+
+    }
+
+    @Transactional(readOnly = true)
+    public Page<SongResponseDto.Search> searchByKeywordLike(SongSearchRequestParamDto songSearchRequestParamDto) {
+
+        songSearchRequestParamDto.setPage(songSearchRequestParamDto.getPage());
+        songSearchRequestParamDto.setSize(songSearchRequestParamDto.getSize());
+        songSearchRequestParamDto.setSort(songSearchRequestParamDto.getSort());
+        songSearchRequestParamDto.setDirection(songSearchRequestParamDto.getDirection());
+
+
+        Page<Song> songs = songSearch.searchLikeKeyword(songSearchRequestParamDto);
+
+        Page<Search> songPage = songs.map(song -> new Search(
+                        song.getTitle(),
+                        song.getSinger(),
+                        song.getGenre(),
+                        song.getCreatedAt(),
+                        song.getLikeCount(),
+                        song.getPlayCount(),
+                        song.getDescription()
+                )
+        );
+
+        return songPage;
 
     }
 }
