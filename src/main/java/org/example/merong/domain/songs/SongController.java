@@ -4,8 +4,11 @@ import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.example.merong.domain.auth.dto.UserAuth;
 import org.example.merong.domain.songs.dto.request.SongRequestDto;
+import org.example.merong.domain.songs.dto.request.SongSearchRequestParamDto;
 import org.example.merong.domain.songs.dto.request.SongUpdateDto;
 import org.example.merong.domain.songs.dto.response.SongResponseDto;
+import org.example.merong.domain.songs.dto.response.SongResponseDto.Search;
+import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
@@ -74,6 +77,18 @@ public class SongController {
         songService.deleteSong(auth.getId(), songId);
 
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+
+    }
+
+    // 검색 기능
+    @GetMapping("/search")
+    public ResponseEntity<Page<Search>> searchByKeywordLike(
+            @ModelAttribute SongSearchRequestParamDto songSearchRequestParamDto
+    ){
+
+        Page<Search> searches = songService.searchByKeywordLike(songSearchRequestParamDto);
+
+        return ResponseEntity.status(HttpStatus.OK).body(searches);
 
     }
 
