@@ -7,6 +7,7 @@ import org.example.merong.domain.songs.dto.response.SongResponseDto;
 import org.example.merong.domain.songs.entity.Song;
 import org.example.merong.domain.songs.exception.SongException;
 import org.example.merong.domain.songs.exception.SongsExceptionCode;
+import org.example.merong.domain.songs.repository.SongRepository;
 import org.example.merong.domain.user.entity.User;
 import org.example.merong.domain.user.exception.UserException;
 import org.example.merong.domain.user.exception.UserExceptionCode;
