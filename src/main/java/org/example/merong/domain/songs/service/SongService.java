@@ -12,6 +12,7 @@ import org.example.merong.domain.user.entity.User;
 import org.example.merong.domain.user.exception.UserException;
 import org.example.merong.domain.user.exception.UserExceptionCode;
 import org.example.merong.domain.user.repository.UserRepository;
+import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -30,6 +31,7 @@ public class SongService {
     private final RedisTemplate<String, Object> redisTemplate;
 
     // 1. 노래 등록
+    @CacheEvict(value = "songSearchCache", allEntries = true)
     public SongResponseDto.Create createSong(Long userId, SongRequestDto dto) {
 
         User currentUser = userRepository.findById(userId).orElseThrow(() -> new UserException(UserExceptionCode.USER_NOT_FOUND));
@@ -50,6 +52,7 @@ public class SongService {
     }
 
     // 3. 노래 수정
+    @CacheEvict(value = "songSearchCache", allEntries = true)
     public SongResponseDto.Update updateSong(Long userId, Long songId, SongUpdateDto dto) {
 
         User currentUser = userRepository.findById(userId).orElseThrow(() -> new UserException(UserExceptionCode.USER_NOT_FOUND));
@@ -68,6 +71,7 @@ public class SongService {
     }
 
     // 4. 노래 삭제
+    @CacheEvict(value = "songSearchCache", allEntries = true)
     public void deleteSong(Long userId, Long songId) {
 
         User currentUser = userRepository.findById(userId).orElseThrow(() -> new UserException(UserExceptionCode.USER_NOT_FOUND));
