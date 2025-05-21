@@ -10,11 +10,13 @@ import org.example.merong.domain.songs.repository.SongRepository;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.concurrent.atomic.AtomicInteger;
 
 @Service
 @RequiredArgsConstructor
+@Transactional
 public class SearchService {
 
     private final SearchRepository searchRepository;
@@ -37,6 +39,7 @@ public class SearchService {
     }
 
     // 2. 인기 검색어 조회
+    @Transactional(readOnly = true)
     public Page<SearchPopularDto> searchPopular(Pageable pageable) {
 
         Page<Search> list = searchRepository.findAllByOrderByCountDesc(pageable);
