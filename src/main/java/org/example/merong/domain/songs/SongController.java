@@ -7,7 +7,7 @@ import org.example.merong.domain.songs.dto.request.SongRequestDto;
 import org.example.merong.domain.songs.dto.request.SongSearchRequestParamDto;
 import org.example.merong.domain.songs.dto.request.SongUpdateDto;
 import org.example.merong.domain.songs.dto.response.SongResponseDto;
-import org.example.merong.domain.songs.dto.response.SongResponseDto.Search;
+import org.example.merong.domain.songs.dto.response.SongResponseDto.find;
 import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -82,11 +82,11 @@ public class SongController {
 
     // 검색 기능
     @GetMapping("/search")
-    public ResponseEntity<Page<Search>> searchByKeywordLike(
+    public ResponseEntity<Page<find>> searchByKeywordLike(
             @ModelAttribute SongSearchRequestParamDto songSearchRequestParamDto
     ){
 
-        Page<Search> searches = songService.searchByKeywordLike(songSearchRequestParamDto);
+        Page<find> searches = songService.searchByKeywordLike(songSearchRequestParamDto);
 
         return ResponseEntity.status(HttpStatus.OK).body(searches);
 
