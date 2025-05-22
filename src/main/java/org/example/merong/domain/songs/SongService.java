@@ -11,6 +11,8 @@ import org.example.merong.domain.user.entity.User;
 import org.example.merong.domain.user.exception.UserException;
 import org.example.merong.domain.user.exception.UserExceptionCode;
 import org.example.merong.domain.user.repository.UserRepository;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -78,7 +80,7 @@ public class SongService {
 
     }
 
-    public List<SongResponseDto.Get> searchSongs(String name, String singer, String sort, String orderBy) {
-        return songRepository.findByDynamicQuery(name, singer, sort, orderBy);
+    public Page<SongResponseDto.Get> searchSongs(String name, String singer, Pageable pageable) {
+        return songRepository.findByDynamicQuery(name, singer, pageable);
     }
 }

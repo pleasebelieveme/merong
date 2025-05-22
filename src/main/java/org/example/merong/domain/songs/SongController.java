@@ -6,6 +6,8 @@ import org.example.merong.domain.auth.dto.UserAuth;
 import org.example.merong.domain.songs.dto.request.SongRequestDto;
 import org.example.merong.domain.songs.dto.request.SongUpdateDto;
 import org.example.merong.domain.songs.dto.response.SongResponseDto;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
@@ -78,13 +80,12 @@ public class SongController {
     }
 
     @GetMapping("/search")
-    public ResponseEntity<List<SongResponseDto.Get>> searchSongs(
+    public ResponseEntity<Page<SongResponseDto.Get>> searchSongs(
         @RequestParam(required = false) String name,
         @RequestParam(required = false) String singer,
-        @RequestParam(defaultValue = "createdAt") String sort,
-        @RequestParam(defaultValue = "desc") String orderBy
+        Pageable pageable // <-- 여기에 page, size, sort 다 포함됨, 하지만 page=0 & size는 20 default로 받아서 변환필요!
     ) {
-        List<SongResponseDto.Get> songs = songService.searchSongs(name, singer, sort, orderBy);
+        Page<SongResponseDto.Get> songs = songService.searchSongs(name, singer, pageable);
         return ResponseEntity.ok(songs);
     }
 
