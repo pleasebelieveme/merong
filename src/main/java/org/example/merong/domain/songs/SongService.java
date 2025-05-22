@@ -1,8 +1,7 @@
 package org.example.merong.domain.songs;
 
 import lombok.RequiredArgsConstructor;
-import org.example.merong.domain.searches.repository.SearchRepository;
-import org.example.merong.domain.searches.service.SearchKeywordService;
+import org.example.merong.domain.searches.service.SearchService;
 import org.example.merong.domain.songs.dto.request.SongRequestDto;
 import org.example.merong.domain.songs.dto.request.SongSearchRequestParamDto;
 import org.example.merong.domain.songs.dto.request.SongUpdateDto;
@@ -18,7 +17,6 @@ import org.example.merong.domain.user.repository.UserRepository;
 import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import org.example.merong.domain.searches.entity.Search;
 
 
 import java.util.List;
@@ -32,7 +30,7 @@ public class SongService {
     private final SongRepository songRepository;
     private final UserRepository userRepository;
     private final SongSearch songSearch;
-    private final SearchKeywordService searchKeywordService;
+    private final SearchService searchService;
 
     // 1. 노래 등록
     public SongResponseDto.Create createSong(Long userId, SongRequestDto dto) {
@@ -92,20 +90,20 @@ public class SongService {
 
         if(songSearchRequestParamDto.getTitle() != null && !songSearchRequestParamDto.getTitle().isBlank()){
 
-            searchKeywordService.saveKeyword(songSearchRequestParamDto.getTitle());
+            searchService.saveKeyword(songSearchRequestParamDto.getTitle());
 
         }
 
 
         if(songSearchRequestParamDto.getSinger() != null && !songSearchRequestParamDto.getSinger().isBlank()){
 
-            searchKeywordService.saveKeyword(songSearchRequestParamDto.getSinger());
+            searchService.saveKeyword(songSearchRequestParamDto.getSinger());
 
         }
 
         if(songSearchRequestParamDto.getGenre() != null){
 
-            searchKeywordService.saveKeyword(songSearchRequestParamDto.getGenre().toString());
+            searchService.saveKeyword(songSearchRequestParamDto.getGenre().toString());
 
         }
 

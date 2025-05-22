@@ -8,6 +8,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.security.core.parameters.P;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 @Service
 @RequiredArgsConstructor
@@ -22,5 +23,17 @@ public class SearchService {
         Page<SearchResponseDto> popular = keywords.map(keyword -> new SearchResponseDto(keyword.getKeyword()));
 
         return popular;
+    }
+
+    @Transactional
+    public void saveKeyword(String keyword) {
+        if(searchRepository.existsByKeyword(keyword)) {
+            Search findKeyword = searchRepository.findByKeyword(keyword);
+            findKeyword.updateCount();
+        } else {
+            Search search = new Search(keyword);
+            search.updateCount();
+            searchRepository.save(search);
+        }
     }
 }
