@@ -32,7 +32,6 @@ public class SearchService {
             findKeyword.updateCount();
         } else {
             Search search = new Search(keyword);
-            search.updateCount();
             searchRepository.save(search);
         }
     }

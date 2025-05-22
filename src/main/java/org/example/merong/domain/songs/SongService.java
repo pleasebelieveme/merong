@@ -85,7 +85,7 @@ public class SongService {
 
     }
 
-    @Transactional
+    @Transactional(readOnly = false)
     public Page<SongResponseDto.find> searchByKeywordLike(SongSearchRequestParamDto songSearchRequestParamDto) {
 
         if(songSearchRequestParamDto.getTitle() != null && !songSearchRequestParamDto.getTitle().isBlank()){

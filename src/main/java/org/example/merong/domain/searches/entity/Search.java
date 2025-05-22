@@ -29,7 +29,7 @@ public class Search {
 	private LocalDateTime searched_at;
 
 	@Column(nullable = false)
-	private int count = 0;
+	private int count = 1;
 
 	public Search(String keyword){
 		this.keyword =keyword;
