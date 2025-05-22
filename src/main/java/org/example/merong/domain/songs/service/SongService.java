@@ -14,11 +14,14 @@ import org.example.merong.domain.user.exception.UserExceptionCode;
 import org.example.merong.domain.user.repository.UserRepository;
 import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.data.redis.core.RedisTemplate;
+import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.cache.annotation.Cacheable;
 
+import java.time.Duration;
 import java.util.List;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 @Service
@@ -110,4 +113,41 @@ public class SongService {
         return redisTemplate.opsForZSet().reverseRange("popular_keywords", 0, 9)
                 .stream().map(Object::toString).collect(Collectors.toList());
     }
+
+    // 조회수 증가
+    public void incrementViewCount(Long songId, Long userId) {
+        String userViewKey = "view:song:" + songId + ":user:" + userId;
+        String viewCountKey = "view:song:" + songId;
+
+        // 어뷰징 방지: 유저가 이미 조회했다면 무시
+        Boolean alreadyViewed = redisTemplate.hasKey(userViewKey);
+        if (Boolean.FALSE.equals(alreadyViewed)) {
+            // 유저 조회 기록 TTL - 어뷰징 방지용
+            redisTemplate.opsForValue().set(userViewKey, "1", Duration.ofHours(1));
+
+            // 조회수 key 에도 하루 TTL 부여
+            redisTemplate.expire(viewCountKey, Duration.ofDays(1));
+        }
+    }
+
+    // 자정 리셋 기능
+    @Scheduled(cron = "0 0 0 * * *") // 매일 자정
+    public void resetViewCounts() {
+        Set<String> keys = redisTemplate.keys("view:song:*");
+        if (keys != null && !keys.isEmpty()) {
+            redisTemplate.delete(keys);
+            System.out.println("🎯 조회수 캐시 자정 리셋 완료: " + keys.size() + "개");
+        }
+    }
+
+    // 6. 단건 노래 검색
+    @Transactional(readOnly = true)
+    public SongResponseDto.Get getSong(Long songId) {
+        Song song = songRepository.findByIdOrElseThrow(songId);
+        return new SongResponseDto.Get(song);
+    }
+
+
+
+
 }

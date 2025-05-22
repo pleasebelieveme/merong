@@ -91,4 +91,19 @@ public class SongController {
         return ResponseEntity.ok(songService.getPopularKeywords());
     }
 
+    /**
+     * 6. 노래 단건 조회 (조회수 증가 포함)
+     */
+    @GetMapping("/{songId}")
+    public ResponseEntity<SongResponseDto.Get> getSong(
+            @AuthenticationPrincipal UserAuth auth,
+            @PathVariable Long songId
+    ) {
+        // 조회수 증가 (어뷰징 방지 및 Redis TTL 적용됨)
+        songService.incrementViewCount(songId, auth.getId());
+
+        // 실제 노래 데이터 반환 (서비스에 getSong 메서드가 있다고 가정)
+        return ResponseEntity.ok(songService.getSong(songId));
+    }
+
 }
