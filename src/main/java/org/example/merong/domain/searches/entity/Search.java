@@ -6,6 +6,7 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.Table;
+import java.time.LocalDateTime;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -25,9 +26,18 @@ public class Search {
 	private String keyword;
 
 	@Column(nullable = false)
-	private String searched_at;
+	private LocalDateTime searched_at;
 
 	@Column(nullable = false)
-	private Long count;
+	private int count = 0;
+
+	public Search(String keyword){
+		this.keyword =keyword;
+		this.searched_at = LocalDateTime.now();
+	}
+
+	public void updateCount(){
+		this.count = this.count + 1;
+	}
 
 }
