@@ -7,6 +7,4 @@ import org.springframework.data.domain.Page;
 
 public interface SongSearch {
     Page<Song> searchLikeKeyword(SongSearchRequestParamDto paramDto);
-
-
 }

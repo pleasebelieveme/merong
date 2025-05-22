@@ -28,19 +28,10 @@ public class SongSearchImpl extends QuerydslRepositorySupport implements SongSea
 
     private final JPAQueryFactory jpaQueryFactory;
 
-//    public SongSearchImpl(Class<?> domainClass, JPAQueryFactory jpaQueryFactory) {
-//        super(domainClass);
-//        this.jpaQueryFactory = jpaQueryFactory;
-//    }
-
-
     @Override
     public Page<Song> searchLikeKeyword(SongSearchRequestParamDto paramDto) {
 
         QSong song = QSong.song;
-
-        log.info("size={}, page={} title={} singer={} genre={} direction={} sort={}" , paramDto.getSize(), paramDto.getPage(), paramDto.getTitle(),paramDto.getSinger(), paramDto.getGenre(), paramDto.getDirection(), paramDto.getSort());
-
 
         Pageable pageable = PageRequest.of(paramDto.getPage(), paramDto.getSize());
 
@@ -59,22 +50,6 @@ public class SongSearchImpl extends QuerydslRepositorySupport implements SongSea
         if(paramDto.getGenre() != null){
             predicate.and(song.genre.eq(paramDto.getGenre()));
         }
-
-//        List<Song> paging = jpaQueryFactory
-//                .select(new QSongResponseDto_Search(
-//                        song.title,
-//                        song.singer,
-//                        song.genre,
-//                        song.createdAt,
-//                        song.likeCount,
-//                        song.playCount,
-//                        song.description))
-//                .from(song)
-//                .where(predicate)
-//                .orderBy(orderSpecifiers)
-//                .offset(pageable.getOffset())
-//                .limit(pageable.getPageSize())
-//                .fetch();
 
         List<Song> paging = jpaQueryFactory
                 .select(song)
