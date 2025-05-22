@@ -1,7 +1,5 @@
 package org.example.merong.redis.config;
 
-import com.fasterxml.jackson.annotation.JsonAutoDetect;
-import com.fasterxml.jackson.annotation.PropertyAccessor;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
@@ -57,28 +55,5 @@ public class CacheConfig {
         template.afterPropertiesSet();
         return template;
     }
-
-
-//    @Bean
-//    public RedisCacheManager cacheManager(RedisConnectionFactory connectionFactory) {
-//
-//        return RedisCacheManager.builder(connectionFactory)
-//                .cacheDefaults(
-//                        RedisCacheConfiguration.defaultCacheConfig()
-//                                .entryTtl(Duration.ofMinutes(10))  // 캐시 TTL 설정
-//                )
-//                .build();
-//
-//    }
-//
-//    // CacheConfig 예시 (객체 직렬화 설정)
-//    @Bean
-//    public RedisCacheConfiguration cacheConfiguration() {
-//        return RedisCacheConfiguration.defaultCacheConfig()
-//                .serializeValuesWith(RedisSerializationContext.SerializationPair.fromSerializer(new GenericJackson2JsonRedisSerializer()))
-//                .entryTtl(Duration.ofMinutes(10));
-//    }
-
-
 }
 

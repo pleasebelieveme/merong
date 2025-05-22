@@ -4,15 +4,10 @@ import lombok.Getter;
 import org.example.merong.domain.songs.entity.Song;
 import org.example.merong.domain.songs.enums.Genres;
 
-import java.io.Serial;
-import java.io.Serializable;
 import java.time.LocalDateTime;
 
 @Getter
 public class SearchResponseDto {
-
-//    @Serial
-//    private static final long serialVersionUID = 1L;
 
     private String title;
     private String singer;
