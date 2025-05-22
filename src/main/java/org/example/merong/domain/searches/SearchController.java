@@ -5,6 +5,7 @@ import org.example.merong.domain.searches.dto.response.SearchPopularDto;
 import org.example.merong.domain.searches.dto.response.SearchResponseDto;
 import org.example.merong.domain.searches.enums.Order;
 import org.example.merong.domain.searches.enums.Type;
+import org.example.merong.domain.searches.service.SearchService;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
@@ -37,6 +38,16 @@ public class SearchController {
         return ResponseEntity.status(HttpStatus.OK).body(searchService.search(type, keyword, order, pageable));
     }
 
+    // 1-2. 캐시를 이용한 통합 검색
+    @PostMapping("/cache")
+    public ResponseEntity<Page<SearchResponseDto>> searchV2(@RequestParam Type type,
+                                                            @RequestParam String keyword,
+                                                            @RequestParam Order order,
+                                                            @PageableDefault Pageable pageable) {
+        searchService.printCache();
+        return ResponseEntity.status(HttpStatus.OK).body(searchService.searchV2(type, keyword, order, pageable));
+    }
+
     /**
      * 2. 인기 검색어 조회
      * @param pageable
@@ -46,6 +57,7 @@ public class SearchController {
     public ResponseEntity<Page<SearchPopularDto>> searchPopular(
             @PageableDefault(sort = "count", direction = Sort.Direction.ASC) Pageable pageable) {
 
+        searchService.printCache();
         return ResponseEntity.status(HttpStatus.OK).body(searchService.searchPopular(pageable));
     }
 }

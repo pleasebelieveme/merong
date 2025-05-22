@@ -4,16 +4,21 @@ import lombok.Getter;
 import org.example.merong.domain.songs.entity.Song;
 import org.example.merong.domain.songs.enums.Genres;
 
+import java.io.Serial;
+import java.io.Serializable;
 import java.time.LocalDateTime;
 
 @Getter
 public class SearchResponseDto {
 
-    private final String title;
-    private final String singer;
-    private final Genres genre;
-    private final LocalDateTime createdAt;
-    private final String description;
+//    @Serial
+//    private static final long serialVersionUID = 1L;
+
+    private String title;
+    private String singer;
+    private Genres genre;
+    private LocalDateTime createdAt;
+    private String description;
 
     public SearchResponseDto(Song song) {
         this.title = song.getTitle();

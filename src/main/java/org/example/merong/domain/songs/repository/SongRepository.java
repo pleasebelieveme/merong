@@ -1,11 +1,15 @@
 package org.example.merong.domain.songs.repository;
 
+import org.example.merong.domain.searches.enums.Order;
+import org.example.merong.domain.searches.enums.Type;
 import org.example.merong.domain.songs.entity.Song;
 import org.example.merong.domain.songs.exception.SongException;
 import org.example.merong.domain.songs.exception.SongsExceptionCode;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
+import java.util.List;
 import java.util.Optional;
 
 @Repository
