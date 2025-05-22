@@ -103,7 +103,7 @@ public class SongResponseDto {
 
     @Getter
     @NoArgsConstructor
-    public static class Search {
+    public static class find {
 
         /*
         노래 제목
@@ -124,7 +124,7 @@ public class SongResponseDto {
         private String description;
 
         @QueryProjection
-        public Search(String title , String singer,Genres genre,LocalDateTime createdAt, Long likeCount, Long playCount, String description){
+        public find(String title , String singer,Genres genre,LocalDateTime createdAt, Long likeCount, Long playCount, String description){
             this.title = title;
             this.singer = singer;
             this.genre = genre;
