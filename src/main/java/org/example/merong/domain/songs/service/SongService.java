@@ -64,7 +64,6 @@ public class SongService {
         }
 
         song.updateSong(dto);
-        songRepository.save(song);
 
         return new SongResponseDto.Update(song);
 
@@ -86,7 +85,7 @@ public class SongService {
 
     }
 
-    // 5. 노래 검색
+    // 5. 노래 검색 - 분리된 캐시 처리
     public List<SongResponseDto.Get> search(String keyword) {
         recordSearchKeyword(keyword); // 캐시 여부 상관없이 무조건 실행
         return getSearchResults(keyword); // 캐시 적용 대상
