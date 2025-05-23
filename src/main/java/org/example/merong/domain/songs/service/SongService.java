@@ -87,8 +87,9 @@ public class SongService {
 
         songCacheService.increasePlayCount(songId);
 
-        System.out.println("최근 재생 수 : " + songCacheService.getPlayCount(songId));
+        System.out.println("Redis 저장된 재생 수 : " + songCacheService.getPlayCount(songId));
 
-        return new ViewPlayCntDto(songCacheService.getPlayCount(songId));
+        Song song = songRepository.findByIdOrElseThrow(songId);
+        return new ViewPlayCntDto(song.getPlayCount());
     }
 }

@@ -46,8 +46,8 @@ public class SongRepositoryImpl implements SongRepositoryCustom{
 
         if(order != null) {
             switch(order) {
-                case LATEST -> query.orderBy(song.createdAt.asc());
-                case OLDEST -> query.orderBy(song.createdAt.desc());
+                case LATEST -> query.orderBy(song.createdAt.desc());
+                case OLDEST -> query.orderBy(song.createdAt.asc());
             }
         }
 

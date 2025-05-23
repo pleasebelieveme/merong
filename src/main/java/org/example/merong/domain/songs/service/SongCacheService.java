@@ -1,6 +1,7 @@
 package org.example.merong.domain.songs.service;
 
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.example.merong.domain.songs.entity.Song;
 import org.example.merong.domain.songs.repository.SongRepository;
 import org.springframework.data.redis.core.RedisTemplate;
@@ -12,6 +13,7 @@ import java.time.ZoneId;
 import java.util.Date;
 import java.util.List;
 
+@Slf4j
 @Service
 @RequiredArgsConstructor
 public class SongCacheService {
@@ -35,7 +37,7 @@ public class SongCacheService {
         return count != null ? count : 0;
     }
 
-    // 재생수 확인
+    // 재생수 확인 TODO : 고칠거
     public Long getPlayCount(Long songId) {
         String key = PLAY_COUNT_KEY_PREFIX + songId;
         String value = redisTemplate.opsForValue().get(key);
@@ -62,5 +64,6 @@ public class SongCacheService {
 
             }
         }
+        log.info("flushPlayCountToDB 실행됌");
     }
 }
