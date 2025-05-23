@@ -32,6 +32,7 @@ public class SongService {
     private final SongRepository songRepository;
     private final UserRepository userRepository;
     private final RedisTemplate<String, Object> redisTemplate;
+    private final SongSearchService songSearchService;
 
     // 1. 노래 등록
     @CacheEvict(value = "songSearchCache", allEntries = true)
@@ -90,22 +91,15 @@ public class SongService {
 
     // 5. 노래 검색 - 분리된 캐시 처리
     public List<SongResponseDto.Get> search(String keyword) {
-        recordSearchKeyword(keyword); // 캐시 여부 상관없이 무조건 실행
-        return getSearchResults(keyword); // 캐시 적용 대상
+        String cleanedKeyword = keyword == null ? "" : keyword.trim().replaceAll("\\s+", ""); // 캐시 키 정제
+        recordSearchKeyword(cleanedKeyword);
+        return songSearchService.getSearchResults(cleanedKeyword); // 프록시 경유 → 캐시 작동
     }
 
     // 인기 검색어 기록 (Redis: ZSet 점수 증가)
     // : 캐시 적중 시 인기 검색어 기록이 누락되어 메서드 분리
     private void recordSearchKeyword(String keyword) {
         redisTemplate.opsForZSet().incrementScore("popular_keywords", keyword, 1);
-    }
-
-    // 검색 결과 캐시 (Caffeine + @Cacheable)
-    @Cacheable(value = "songSearchCache", key = "#keyword")
-    public List<SongResponseDto.Get> getSearchResults(String keyword) {
-        return songRepository.searchByKeyword(keyword)
-                .stream().map(SongResponseDto::fromEntity)
-                .collect(Collectors.toList());
     }
 
     // 인기 검색어 조회 (Redis: ZSet 내 상위 10)
