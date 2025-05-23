@@ -6,6 +6,8 @@ import org.example.merong.domain.auth.dto.UserAuth;
 import org.example.merong.domain.songs.dto.request.SongRequestDto;
 import org.example.merong.domain.songs.dto.request.SongUpdateDto;
 import org.example.merong.domain.songs.dto.response.SongResponseDto;
+import org.example.merong.domain.songs.dto.response.ViewPlayCntDto;
+import org.example.merong.domain.songs.service.SongService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
@@ -77,4 +79,10 @@ public class SongController {
 
     }
 
+    // 5. 노래 재생(임시)
+    @GetMapping("/{songId}/play")
+    public ResponseEntity<ViewPlayCntDto> playSong(@PathVariable Long songId) {
+
+        return ResponseEntity.status(HttpStatus.OK).body(songService.playSong(songId));
+    }
 }

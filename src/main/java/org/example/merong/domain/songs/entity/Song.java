@@ -78,4 +78,9 @@ public class Song extends BaseEntity {
 		if(dto.getGenre() != null) this.genre = dto.getGenre();
 		if(dto.getDescription() != null) this.description = dto.getDescription();
 	}
+
+	// 레디스에서 조회수 반영을 위한 메서드
+	public void updatePlayCounts(Long cnt) {
+		this.playCount = cnt;
+	}
 }

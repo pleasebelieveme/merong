@@ -1,9 +1,10 @@
-package org.example.merong.domain.songs;
+package org.example.merong.domain.songs.service;
 
 import lombok.RequiredArgsConstructor;
 import org.example.merong.domain.songs.dto.request.SongRequestDto;
 import org.example.merong.domain.songs.dto.request.SongUpdateDto;
 import org.example.merong.domain.songs.dto.response.SongResponseDto;
+import org.example.merong.domain.songs.dto.response.ViewPlayCntDto;
 import org.example.merong.domain.songs.entity.Song;
 import org.example.merong.domain.songs.exception.SongException;
 import org.example.merong.domain.songs.exception.SongsExceptionCode;
@@ -25,6 +26,8 @@ public class SongService {
 
     private final SongRepository songRepository;
     private final UserRepository userRepository;
+
+    private final SongCacheService songCacheService;
 
     // 1. 노래 등록
     public SongResponseDto.Create createSong(Long userId, SongRequestDto dto) {
@@ -77,5 +80,15 @@ public class SongService {
 
         songRepository.delete(song);
 
+    }
+
+    // 5. 노래 재생
+    public ViewPlayCntDto playSong(Long songId) {
+
+        songCacheService.increasePlayCount(songId);
+
+        System.out.println("최근 재생 수 : " + songCacheService.getPlayCount(songId));
+
+        return new ViewPlayCntDto(songCacheService.getPlayCount(songId));
     }
 }
