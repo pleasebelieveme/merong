@@ -1,8 +1,10 @@
-package org.example.merong.domain.songs;
+package org.example.merong.domain.songs.controller;
 
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.example.merong.domain.auth.dto.UserAuth;
+import org.example.merong.domain.searches.service.SearchService;
+import org.example.merong.domain.songs.service.SongService;
 import org.example.merong.domain.songs.dto.request.SongRequestDto;
 import org.example.merong.domain.songs.dto.request.SongSearchRequestParamDto;
 import org.example.merong.domain.songs.dto.request.SongUpdateDto;
@@ -22,6 +24,8 @@ import java.util.List;
 public class SongController {
 
     private final SongService songService;
+
+    private final SearchService searchService;
 
     /**
      * 1. 노래 등록
@@ -81,7 +85,7 @@ public class SongController {
     }
 
     // 검색 기능
-    @GetMapping("/search")
+    @GetMapping("/v1/search")
     public ResponseEntity<Page<find>> searchByKeywordLike(
             @ModelAttribute SongSearchRequestParamDto songSearchRequestParamDto
     ){
@@ -91,5 +95,31 @@ public class SongController {
         return ResponseEntity.status(HttpStatus.OK).body(searches);
 
     }
+
+    // 검색 기능
+    @GetMapping("/v2/search")
+    public ResponseEntity<Page<find>> searchByKeywordLikeV2(
+            @ModelAttribute SongSearchRequestParamDto paramDto
+    ){
+
+
+        Page<find> searches = songService.searchByKeywordLikeV2(paramDto);
+
+        return ResponseEntity.status(HttpStatus.OK).body(searches);
+
+    }
+
+    // 단건 검색
+    @GetMapping("/{songId}")
+    public ResponseEntity<SongResponseDto.Get> findById(
+            @PathVariable Long songId,
+            @AuthenticationPrincipal UserAuth userAuth
+    ){
+
+        songService.increaseViewCount(userAuth.getId(), songId);
+
+        return ResponseEntity.status(HttpStatus.OK).body(songService.findById(songId));
+    }
+
 
 }

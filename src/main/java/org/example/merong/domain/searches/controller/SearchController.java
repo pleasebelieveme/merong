@@ -1,6 +1,7 @@
 package org.example.merong.domain.searches.controller;
 
 
+import java.util.Set;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import org.example.merong.domain.searches.dto.SearchResponseDto;
@@ -27,6 +28,16 @@ public class SearchController {
     ){
 
         Page<SearchResponseDto> popular = searchService.findPopular(pageable);
+
+        return ResponseEntity.status(HttpStatus.OK).body(popular);
+    }
+
+    @GetMapping("/api/songs/search/popular/v2")
+    public ResponseEntity<Set<String>> findPopularV2(
+            @PageableDefault(size = 10, sort = "count", direction = Sort.Direction.DESC) Pageable pageable
+    ){
+
+        Set<String> popular = searchService.getTopSearchKeywords();
 
         return ResponseEntity.status(HttpStatus.OK).body(popular);
     }

@@ -2,6 +2,7 @@ package org.example.merong.domain.songs.dto.request;
 
 
 import jakarta.annotation.PostConstruct;
+import java.util.Locale;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -45,6 +46,20 @@ public class SongSearchRequestParamDto {
 
     public void setDirection(Sort.Direction direction) {
         this.direction = (direction == null) ? Sort.Direction.ASC : direction;
+    }
+
+    public String toCacheKey(){
+        return "title" + normalize(title) +
+                ",singer" + normalize(singer) +
+                "genre" + (genre == null ? "" : genre.toString().toLowerCase()) +
+                "direction" + direction +
+                "sort" + sort +
+                "page" + page +
+                "size" + size;
+    }
+
+    public String normalize(String input){
+        return (input == null ? "" : input.trim().toLowerCase());
     }
 
 }

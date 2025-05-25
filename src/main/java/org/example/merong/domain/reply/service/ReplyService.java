@@ -1,16 +1,11 @@
 package org.example.merong.domain.reply.service;
 
-import lombok.AllArgsConstructor;
 import lombok.RequiredArgsConstructor;
-import org.example.merong.domain.comments.dto.request.CommentRequestDto;
-import org.example.merong.domain.comments.dto.response.CommentResponseDto;
-import org.example.merong.domain.comments.entity.Comment;
 import org.example.merong.domain.comments.repository.CommentRepository;
 import org.example.merong.domain.reply.dto.request.ReplyRequestDto;
 import org.example.merong.domain.reply.dto.response.ReplyResponseDto;
 import org.example.merong.domain.reply.entity.Reply;
 import org.example.merong.domain.reply.repository.ReplyRepository;
-import org.example.merong.domain.songs.SongRepository;
 import org.example.merong.domain.user.entity.User;
 import org.example.merong.domain.user.exception.UserException;
 import org.example.merong.domain.user.exception.UserExceptionCode;

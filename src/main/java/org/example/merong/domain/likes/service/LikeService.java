@@ -1,12 +1,11 @@
 package org.example.merong.domain.likes.service;
 
-import org.example.merong.domain.likes.dto.request.LikeRequestDto;
 import org.example.merong.domain.likes.dto.response.LikeResponseDto;
 import org.example.merong.domain.likes.entity.Like;
 import org.example.merong.domain.likes.exception.LikeException;
 import org.example.merong.domain.likes.exception.LikeExceptionCode;
 import org.example.merong.domain.likes.repository.LikeRepository;
-import org.example.merong.domain.songs.SongRepository;
+import org.example.merong.domain.songs.repository.SongRepository;
 import org.example.merong.domain.songs.entity.Song;
 import org.example.merong.domain.user.repository.UserRepository;
 import org.example.merong.domain.user.entity.User;

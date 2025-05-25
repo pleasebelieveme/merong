@@ -1,4 +1,4 @@
-package org.example.merong.domain.songs;
+package org.example.merong.domain.songs.repository;
 
 import org.example.merong.domain.songs.entity.Song;
 import org.example.merong.domain.songs.exception.SongException;

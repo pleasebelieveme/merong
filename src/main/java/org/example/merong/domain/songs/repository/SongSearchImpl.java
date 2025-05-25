@@ -1,4 +1,4 @@
-package org.example.merong.domain.songs;
+package org.example.merong.domain.songs.repository;
 
 import com.querydsl.core.BooleanBuilder;
 import com.querydsl.core.types.Order;
