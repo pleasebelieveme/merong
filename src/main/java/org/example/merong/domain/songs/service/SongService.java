@@ -119,6 +119,9 @@ public class SongService {
             // 유저 조회 기록 TTL - 어뷰징 방지용
             redisTemplate.opsForValue().set(userViewKey, "1", Duration.ofHours(1));
 
+            // 조회수 증가
+            redisTemplate.opsForValue().increment(viewCountKey);
+
             // 조회수 key 에도 하루 TTL 부여
             redisTemplate.expire(viewCountKey, Duration.ofDays(1));
         }
@@ -138,10 +141,16 @@ public class SongService {
     @Transactional(readOnly = true)
     public SongResponseDto.Get getSong(Long songId) {
         Song song = songRepository.findByIdOrElseThrow(songId);
-        return new SongResponseDto.Get(song);
+        Long viewCount = getViewCount(songId);
+        return new SongResponseDto.Get(song, viewCount);
     }
 
-
+    // 조회수 증가
+    public Long getViewCount(Long songId) {
+        String viewCountKey = "view:song:" + songId;
+        Object value = redisTemplate.opsForValue().get(viewCountKey);
+        return value != null ? Long.parseLong(value.toString()) : 0L;
+    }
 
 
 }

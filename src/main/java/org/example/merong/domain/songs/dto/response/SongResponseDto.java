@@ -74,8 +74,9 @@ public class SongResponseDto {
         private final Long playCount;
         private final String description;
         private final List<CommentResponseDto.Get> comments;
+        private final Long viewCount;
 
-        public Get(Song song) {
+        public Get(Song song, Long viewCount) {
             this.id = song.getId();
             this.userId = song.getUser().getId();
             this.name = song.getTitle();
@@ -86,12 +87,18 @@ public class SongResponseDto {
             this.likeCount = song.getLikeCount();
             this.playCount = song.getPlayCount();
             this.description = song.getDescription();
+            this.viewCount = viewCount;
             this.comments = song.getComments().stream()
                     .map(comment -> new CommentResponseDto.Get(
                             comment.getUser().getId(),
                             comment.getContent(),
                             comment.getUpdatedAt()
                     )).toList();
+
+        }
+
+        public Get(Song song) {
+            this(song, 0L); // 기본 조회수 0 으로 세팅
         }
     }
 
@@ -132,4 +139,9 @@ public class SongResponseDto {
     public static Get fromEntity(Song song) {
         return new Get(song);
     }
+
+    public static Get fromEntity(Song song, Long viewCount) {
+        return new Get(song, viewCount);
+    }
+
 }
