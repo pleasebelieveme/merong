@@ -15,9 +15,14 @@ public class RedisConfig {
         RedisTemplate<String, Object> template = new RedisTemplate<>();
         template.setConnectionFactory(connectionFactory);
 
-        // Key, Value 직렬화 방식 설정
-//        template.setKeySerializer(new StringRedisSerializer());
-//        template.setValueSerializer(new StringRedisSerializer());
+        // Key, Value 직렬화 방식을 문자열 기반으로 설정
+        StringRedisSerializer stringSerializer = new StringRedisSerializer();
+        template.setKeySerializer(stringSerializer);
+        template.setValueSerializer(stringSerializer);
+        template.setHashKeySerializer(stringSerializer);
+        template.setHashValueSerializer(stringSerializer);
+
+        template.afterPropertiesSet();
 
         return template;
     }
