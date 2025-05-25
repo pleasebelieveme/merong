@@ -1,8 +1,9 @@
-package org.example.merong.domain.songs;
+package org.example.merong.domain.songs.controller;
 
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.example.merong.domain.auth.dto.UserAuth;
+import org.example.merong.domain.songs.service.SongService;
 import org.example.merong.domain.songs.dto.request.SongRequestDto;
 import org.example.merong.domain.songs.dto.request.SongUpdateDto;
 import org.example.merong.domain.songs.dto.response.SongResponseDto;
@@ -75,6 +76,34 @@ public class SongController {
 
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
 
+    }
+
+    /**
+     * 5. 노래 검색
+     */
+    @GetMapping("/search")
+    public ResponseEntity<List<SongResponseDto.Get>> search(@RequestParam String keyword) {
+        return ResponseEntity.ok(songService.search(keyword));
+    }
+
+    @GetMapping("/popular")
+    public ResponseEntity<List<String>> popularKeywords() {
+        return ResponseEntity.ok(songService.getPopularKeywords());
+    }
+
+    /**
+     * 6. 노래 단건 조회 (조회수 증가 포함)
+     */
+    @GetMapping("/{songId}")
+    public ResponseEntity<SongResponseDto.Get> getSong(
+            @AuthenticationPrincipal UserAuth auth,
+            @PathVariable Long songId
+    ) {
+        // 조회수 증가 (어뷰징 방지 및 Redis TTL 적용됨)
+        songService.incrementViewCount(songId, auth.getId());
+
+        // 실제 노래 데이터 반환 (서비스에 getSong 메서드가 있다고 가정)
+        return ResponseEntity.ok(songService.getSong(songId));
     }
 
 }

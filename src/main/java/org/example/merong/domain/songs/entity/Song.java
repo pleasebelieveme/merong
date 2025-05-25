@@ -63,6 +63,9 @@ public class Song extends BaseEntity {
 	@Column(nullable = false)
 	private Long playCount;
 
+	@Column(nullable = false)
+	private Integer duration;
+
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "user_id", nullable = false)
 	private User user;
@@ -78,6 +81,7 @@ public class Song extends BaseEntity {
 		this.description = dto.getDescription();
 		this.likeCount = 0L;
 		this.playCount = 0L;
+		this.duration = 180;
 	}
 
 	// PATCH 요청 시
@@ -86,5 +90,16 @@ public class Song extends BaseEntity {
 		if(dto.getSinger() != null) this.singer = dto.getSinger();
 		if(dto.getGenre() != null) this.genre = dto.getGenre();
 		if(dto.getDescription() != null) this.description = dto.getDescription();
+	}
+
+	public Song(User user, String title, String singer) {
+		this.user = user;
+		this.title = title;
+		this.singer = singer;
+		this.genre = Genres.BALLAD; // 더미 기본값
+		this.description = "Auto-generated dummy song";
+		this.likeCount = 0L;
+		this.playCount = 0L;
+		this.duration = 180;
 	}
 }

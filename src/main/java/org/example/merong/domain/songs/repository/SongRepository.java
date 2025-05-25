@@ -1,4 +1,4 @@
-package org.example.merong.domain.songs;
+package org.example.merong.domain.songs.repository;
 
 import org.example.merong.domain.songs.entity.Song;
 import org.example.merong.domain.songs.exception.SongException;
@@ -9,7 +9,7 @@ import org.springframework.stereotype.Repository;
 import java.util.Optional;
 
 @Repository
-public interface SongRepository extends JpaRepository<Song, Long> {
+public interface SongRepository extends JpaRepository<Song, Long>, SongQueryRepository {
 
     Optional<Song> findById(Long songId);
 
