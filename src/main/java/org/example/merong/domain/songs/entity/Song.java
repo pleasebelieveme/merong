@@ -2,9 +2,12 @@ package org.example.merong.domain.songs.entity;
 
 import java.util.List;
 
-import org.example.merong.common.BaseEntity;
+import org.example.merong.common.base.BaseEntity;
 import org.example.merong.domain.comments.entity.Comment;
-import org.example.merong.domain.users.entity.User;
+import org.example.merong.domain.user.entity.User;
+import org.example.merong.domain.songs.dto.request.SongRequestDto;
+import org.example.merong.domain.songs.dto.request.SongUpdateDto;
+import org.example.merong.domain.songs.enums.Genres;
 
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
@@ -28,26 +31,40 @@ import lombok.NoArgsConstructor;
 @Table(name = "songs")
 public class Song extends BaseEntity {
 
+	/**
+	 * PK
+	 * 노래제목
+	 * 아티스트
+	 * 장르
+	 * 좋아요 수
+	 * 재생 수
+	 * 유저 FK
+	 */
+
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
 
 	@Column(nullable = false)
-	private String name;
-
-	@Column(nullable = false)
-	private String duration;
+	private String title;
 
 	@Column(nullable = false)
 	private String singer;
 
 	@Column(nullable = false)
-	private String genre;
+	private Genres genre;
+
+	@Column(nullable = false)
+	private String description;
 
 	@Column(nullable = false)
 	private Long likeCount;
 
+	@Column(nullable = false)
 	private Long playCount;
+
+	@Column(nullable = false)
+	private Integer duration;
 
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "user_id", nullable = false)
@@ -56,5 +73,33 @@ public class Song extends BaseEntity {
 	@OneToMany(mappedBy = "song", cascade = CascadeType.ALL, orphanRemoval = true)
 	private List<Comment> comments;
 
+	public Song(User user, SongRequestDto dto) {
+		this.user = user;
+		this.title = dto.getName();
+		this.singer = dto.getSinger();
+		this.genre = dto.getGenre();
+		this.description = dto.getDescription();
+		this.likeCount = 0L;
+		this.playCount = 0L;
+		this.duration = 180;
+	}
 
+	// PATCH 요청 시
+	public void updateSong(SongUpdateDto dto) {
+		if(dto.getName() != null) this.title = dto.getName();
+		if(dto.getSinger() != null) this.singer = dto.getSinger();
+		if(dto.getGenre() != null) this.genre = dto.getGenre();
+		if(dto.getDescription() != null) this.description = dto.getDescription();
+	}
+
+	public Song(User user, String title, String singer) {
+		this.user = user;
+		this.title = title;
+		this.singer = singer;
+		this.genre = Genres.BALLAD; // 더미 기본값
+		this.description = "Auto-generated dummy song";
+		this.likeCount = 0L;
+		this.playCount = 0L;
+		this.duration = 180;
+	}
 }
