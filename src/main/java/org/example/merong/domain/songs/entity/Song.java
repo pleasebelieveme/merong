@@ -2,6 +2,7 @@ package org.example.merong.domain.songs.entity;
 
 import java.util.List;
 
+import jakarta.persistence.*;
 import org.example.merong.common.base.BaseEntity;
 import org.example.merong.domain.comments.entity.Comment;
 import org.example.merong.domain.user.entity.User;
@@ -9,17 +10,6 @@ import org.example.merong.domain.songs.dto.request.SongRequestDto;
 import org.example.merong.domain.songs.dto.request.SongUpdateDto;
 import org.example.merong.domain.songs.enums.Genres;
 
-import jakarta.persistence.CascadeType;
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.FetchType;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
-import jakarta.persistence.JoinColumn;
-import jakarta.persistence.ManyToOne;
-import jakarta.persistence.OneToMany;
-import jakarta.persistence.Table;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -73,6 +63,9 @@ public class Song extends BaseEntity {
 	@OneToMany(mappedBy = "song", cascade = CascadeType.ALL, orphanRemoval = true)
 	private List<Comment> comments;
 
+	@Version
+	private Long version;
+
 	public Song(User user, SongRequestDto dto) {
 		this.user = user;
 		this.title = dto.getName();
@@ -101,5 +94,10 @@ public class Song extends BaseEntity {
 		this.likeCount = 0L;
 		this.playCount = 0L;
 		this.duration = 180;
+	}
+
+	// 좋아요 수 증가 - 낙관적 락 충돌 유발 가능
+	public void increaseLikeCount() {
+		this.likeCount += 1;
 	}
 }

@@ -15,54 +15,27 @@ public class SongResponseDto {
 
     @Getter
     public static class Create {
+        private final Long id;
+        private final Long userId;
+        private final String name;
+        private final String singer;
+        private final Genres genre;
+        private final LocalDateTime createdAt;
+        private final String description;
 
-    /*
-     PK
-     유저 PK
-     노래 제목
-     가수
-     장르
-     작성일(발매일)
-     설명
-     */
-
-    private final Long id;
-    private final Long userId;
-    private final String name;
-    private final String singer;
-    private final Genres genre;
-    private final LocalDateTime createdAt;
-    private final String description;
-
-    public Create(Song song) {
-        this.id = song.getId();
-        this.userId = song.getUser().getId();
-        this.name = song.getTitle();
-        this.singer = song.getSinger();
-        this.genre = song.getGenre();
-        this.createdAt = song.getCreatedAt();
-        this.description = song.getDescription();
-    }
-
+        public Create(Song song) {
+            this.id = song.getId();
+            this.userId = song.getUser().getId();
+            this.name = song.getTitle();
+            this.singer = song.getSinger();
+            this.genre = song.getGenre();
+            this.createdAt = song.getCreatedAt();
+            this.description = song.getDescription();
+        }
     }
 
     @Getter
     public static class Get {
-
-        /*
-        PK
-        유저 PK
-        노래 제목
-        가수
-        장르
-        작성일(발매일)
-        수정일
-        좋아요 수
-        재생 수
-        설명
-        댓글 목록
-         */
-
         private final Long id;
         private final Long userId;
         private final String name;
@@ -78,7 +51,7 @@ public class SongResponseDto {
 
         public Get(Song song, Long viewCount) {
             this.id = song.getId();
-            this.userId = song.getUser().getId();
+            this.userId = song.getUser() != null ? song.getUser().getId() : null;
             this.name = song.getTitle();
             this.singer = song.getSinger();
             this.genre = song.getGenre();
@@ -88,33 +61,27 @@ public class SongResponseDto {
             this.playCount = song.getPlayCount();
             this.description = song.getDescription();
             this.viewCount = viewCount;
-            this.comments = song.getComments().stream()
-                    .map(comment -> new CommentResponseDto.Get(
-                            comment.getUser().getId(),
-                            comment.getContent(),
-                            comment.getUpdatedAt()
-                    )).toList();
 
+            if (song.getComments() != null) {
+                this.comments = song.getComments().stream()
+                        .map(comment -> new CommentResponseDto.Get(
+                                comment.getUser() != null ? comment.getUser().getId() : null,
+                                comment.getContent(),
+                                comment.getUpdatedAt()
+                        ))
+                        .toList();
+            } else {
+                this.comments = List.of();
+            }
         }
 
         public Get(Song song) {
-            this(song, 0L); // 기본 조회수 0 으로 세팅
+            this(song, 0L);
         }
     }
 
     @Getter
     public static class Update {
-
-        /* PK
-        유저 PK
-        노래 제목
-        가수
-        장르
-        작성일
-        수정일
-        설명
-         */
-
         private final Long id;
         private final Long userId;
         private final String name;
@@ -143,5 +110,4 @@ public class SongResponseDto {
     public static Get fromEntity(Song song, Long viewCount) {
         return new Get(song, viewCount);
     }
-
 }

@@ -1,6 +1,7 @@
 package org.example.merong.domain.songs.service;
 
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.example.merong.domain.songs.repository.SongRepository;
 import org.example.merong.domain.songs.dto.request.SongRequestDto;
 import org.example.merong.domain.songs.dto.request.SongUpdateDto;
@@ -14,6 +15,7 @@ import org.example.merong.domain.user.exception.UserExceptionCode;
 import org.example.merong.domain.user.repository.UserRepository;
 import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.data.redis.core.RedisTemplate;
+import org.springframework.orm.ObjectOptimisticLockingFailureException;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -24,6 +26,7 @@ import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
 
+@Slf4j
 @Service
 @RequiredArgsConstructor
 @Transactional
@@ -48,12 +51,19 @@ public class SongService {
     // 2. 내 노래 전체 조회
     @Transactional(readOnly = true)
     public List<SongResponseDto.Get> getSongs(Long userId) {
+        log.info("getSongs() 진입, userId={}", userId);
 
-        User currentUser = userRepository.findById(userId).orElseThrow(() -> new UserException(UserExceptionCode.USER_NOT_FOUND));
+        User currentUser = userRepository.findById(userId)
+                .orElseThrow(() -> new UserException(UserExceptionCode.USER_NOT_FOUND));
 
-        return currentUser.getSongs().stream().map(SongResponseDto.Get::new).collect(Collectors.toList());
+        List<Song> songs = currentUser.getSongs();
+        log.info("getSongs() 정상 종료, 결과 개수={}", songs.size());
 
+        return songs.stream()
+                .map(SongResponseDto.Get::new)
+                .collect(Collectors.toList());
     }
+
 
     // 3. 노래 수정
     @CacheEvict(value = "songSearchCache", allEntries = true)
@@ -152,5 +162,25 @@ public class SongService {
         return value != null ? Long.parseLong(value.toString()) : 0L;
     }
 
+    @Transactional
+    public void updateWithRetry(Long songId, int maxRetries) {
+        int attempts = 0;
 
+        while (true) {
+            try {
+                updatePost(songId); // 트랜잭션 내에서 수행
+                break;
+            } catch (ObjectOptimisticLockingFailureException e) {
+                if (++attempts > maxRetries) {
+                    throw new RuntimeException("최대 재시도 횟수를 초과했습니다.");
+                }
+            }
+        }
+    }
+
+    @Transactional
+    public void updatePost(Long songId) {
+        Song song = songRepository.findByIdOrElseThrow(songId);
+        song.increaseLikeCount();
+    }
 }
