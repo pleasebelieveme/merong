@@ -1,0 +1,47 @@
+PLAIN
+K 11
+targetHosts
+V 0
+
+K 9
+validated
+V 1
+0
+END
+ENDREP
+id: 0-6.0.r7/59
+type: file
+pred: 0-6.0.r6/1192
+count: 1
+text: 6 0 1120 2549 fd32ca0e8b09e3e0ade43b693ea736d0 87edb444d57ce4ba6428ae3ab52ae706088c740a 6-6/_1
+props: 7 0 46 46 536bcf2a8ad0af566c24c817dde35b51
+cpath: /searchtest.groovy
+copyroot: 0 /
+
+PLAIN
+K 14
+.gitconfig.yml
+V 17
+file 0-1.0.r1/346
+K 17
+searchtest.groovy
+V 16
+file 0-6.0.r7/59
+K 11
+test.groovy
+V 18
+file 0-2.0.r5/1208
+END
+ENDREP
+id: 0.0.r7/453
+type: dir
+pred: 0.0.r6/1573
+count: 7
+text: 7 307 133 133 6f772094f17920d20c02fafc06ee2db2
+cpath: /
+copyroot: 0 /
+
+0-6.0.t6-6 modify-file true true /searchtest.groovy
+
+
+453 582

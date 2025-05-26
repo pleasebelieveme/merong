@@ -1,16 +1,4 @@
 services:
-  mysql:
-    image: mysql:8.0
-    container_name: mysql-container
-    restart: always
-    environment:
-      MYSQL_ROOT_PASSWORD: 1234
-    ports:
-      - "3308:3306"
-    volumes:
-      - ./mysql/init.sql:/docker-entrypoint-initdb.d/init.sql
-      - mysql_data:/var/lib/mysql
-
   redis:
     image: redis:latest
     container_name: redis-container
@@ -19,6 +7,21 @@ services:
       - "6379:6379"
     volumes:
       - redis_data:/data
+
+  controller:
+    image: ngrinder/controller
+    restart: always
+    ports:
+      - "9000:80"
+      - "16001:16001"
+      - "12000-12009:12000-12009"
+    volumes:
+      - ./ngrinder-controller:/opt/ngrinder-controller
+  agent:
+    image: ngrinder/agent
+    restart: always
+    links:
+      - controller
 
 volumes:
   mysql_data:

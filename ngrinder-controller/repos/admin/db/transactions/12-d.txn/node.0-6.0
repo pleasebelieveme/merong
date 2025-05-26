@@ -1,0 +1,9 @@
+id: 0-6.0.t12-d
+type: file
+pred: 0-6.0.r12/140
+count: 7
+text: 12 0 55 2566 7ac4ee549162d06a3ef84320ba61efcd 129185bbf0400d3ec9cd74b9f961508bb1c2c57b 12-d/_1
+props: -1
+cpath: /searchtest.groovy
+copyroot: 0 /
+

@@ -1,0 +1,4 @@
+0-6.0.t12-d modify-file true false /searchtest.groovy
+
+0-6.0.t12-d modify-file false true /searchtest.groovy
+
