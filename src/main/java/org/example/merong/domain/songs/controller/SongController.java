@@ -1,7 +1,9 @@
 package org.example.merong.domain.songs.controller;
 
+import jakarta.servlet.http.HttpServletResponse;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import org.example.merong.common.dto.CommonResponse;
 import org.example.merong.domain.auth.dto.UserAuth;
 import org.example.merong.domain.songs.service.SongService;
 import org.example.merong.domain.songs.dto.request.SongRequestDto;
@@ -104,6 +106,13 @@ public class SongController {
 
         // 실제 노래 데이터 반환 (서비스에 getSong 메서드가 있다고 가정)
         return ResponseEntity.ok(songService.getSong(songId));
+    }
+
+    // 시연영상을 위한 수동리셋 코드
+    @PostMapping("/reset-view-counts")
+    public ResponseEntity<CommonResponse> resetViewCountsManually() {
+        songService.resetViewCounts();
+        return ResponseEntity.ok(new CommonResponse(true, HttpServletResponse.SC_OK ,"수동 리셋 성공",null));
     }
 
 }

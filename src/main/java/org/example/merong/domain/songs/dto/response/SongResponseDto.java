@@ -1,5 +1,6 @@
 package org.example.merong.domain.songs.dto.response;
 
+import java.io.Serializable;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import org.example.merong.domain.comments.dto.response.CommentResponseDto;
@@ -47,7 +48,8 @@ public class SongResponseDto {
     }
 
     @Getter
-    public static class Get {
+    public static class Get implements Serializable {
+        private static final long serialVersionUID = 1L;
 
         /*
         PK
